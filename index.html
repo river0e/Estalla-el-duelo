@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title> Duelo del Oeste </title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1> 🌵 Estalla el duelo 🌵 </h1>
+  <p id="mensaje">Presiona "Iniciar Duelo"</p>
+
+  <div id="nivel-info">
+    <p>🎖️ Nivel: <span id="nivel">1</span></p>
+    <p>🏜️ Experiencia: <span id="exp">0</span>/5</p>
+    <p>💥 Disparos restantes: <span id="disparos">6</span></p>
+  </div>
+
+  <div id="zona-control">
+    <button id="btnIniciar"> 👢Iniciar Duelo </button>
+    <button id="btnJugador" disabled>🔘¡Dispara!</button>
+    <button id="btnCubrirse" disabled>🧱 Cubrirse</button>
+  </div>
+
+  <!-- Sonidos -->
+  <audio id="sndInicio" src="sonidos/inicio.wav"></audio>
+  <audio id="sndDisparo" src="sonidos/disparo.wav"></audio>
+  <audio id="sndVictoria" src="sonidos/victoria.wav"></audio>
+  <audio id="sndDerrota" src="sonidos/derrota.wav"></audio>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
