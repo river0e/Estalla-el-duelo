@@ -27,11 +27,13 @@ const spanDisparos = document.getElementById("disparos"); // Para mostrar los di
 let moverBotonInterval = null;
 
 function aumentarDificultad() {
-  const tiempoEsperaMin = Math.max(2000 - (nivel - 1) * 200, 1000);
-  const tiempoEsperaMax = Math.max(5000 - (nivel - 1) * 400, 2000);
+  // Reducimos más rápido el tiempo de espera a medida que sube el nivel
+  const tiempoEsperaMin = Math.max(1500 - (nivel - 1) * 200, 800);  // Reducción más pronunciada
+  const tiempoEsperaMax = Math.max(2500 - (nivel - 1) * 300, 1500);  // Menor rango de espera
+
   console.log(`🎯 Nivel ${nivel} - Tiempo de espera entre ${tiempoEsperaMin}ms y ${tiempoEsperaMax}`);
 
-  // Solo ajustar disparos si subiste de nivel
+  // Ajuste de disparos restantes al subir de nivel
   if (experiencia === 0) {
     disparosRestantes = Math.max(6 - (nivel - 1), 2);
     spanDisparos.textContent = disparosRestantes;
@@ -43,18 +45,18 @@ function aumentarDificultad() {
   btnJugador.style.position = "static";
   btnJugador.classList.remove("girando");
 
-  // Nivel 3 o más: mover el botón
-  if (nivel >= 3) {
-    const intervaloMovimiento = nivel >= 5 ? 400 : 800; // Más rápido a partir del nivel 5
+  // Mover el botón a partir del nivel 2
+  if (nivel >= 2) {
+    const intervaloMovimiento = nivel >= 5 ? 400 : 800; // Más rápido a partir del nivel 3
     moverBotonInterval = setInterval(() => {
-      const randomX = Math.floor(Math.random() * 200);
-      const randomY = Math.floor(Math.random() * 200);
+      const randomX = Math.floor(Math.random() * 500);
+      const randomY = Math.floor(Math.random() * 500);
       btnJugador.style.position = "absolute";
       btnJugador.style.left = `${randomX}px`;
       btnJugador.style.top = `${randomY}px`;
     }, intervaloMovimiento);
 
-    // Nivel 5 o más: también hacer que gire
+    // A partir del nivel 4, hacer que el botón gire
     if (nivel >= 5) {
       btnJugador.classList.add("girando");
     }
@@ -62,7 +64,6 @@ function aumentarDificultad() {
 
   return { tiempoEsperaMin, tiempoEsperaMax };
 }
-
 // Función para iniciar la ronda
 btnIniciar.addEventListener("click", () => {
   console.log("Iniciando el juego...");
