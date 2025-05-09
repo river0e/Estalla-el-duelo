@@ -4,29 +4,36 @@
   <meta charset="UTF-8">
   <title> Duelo del Oeste </title>
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Ewert&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h1> 🌵 Estalla el duelo 🌵 </h1>
+  <h1 id="tituloJuego">🌵 Estalla el duelo 🌵</h1>
   <p id="mensaje">Presiona "Iniciar Duelo"</p>
+ 
 
   <div id="nivel-info">
-    <p>🎖️ Nivel: <span id="nivel">1</span></p>
+    <p>🐮 Nivel: <span id="nivel">1</span></p>
     <p>🏜️ Experiencia: <span id="exp">0</span>/5</p>
     <p>💥 Disparos restantes: <span id="disparos">6</span></p>
   </div>
 
   <div id="zona-control">
-    <button id="btnIniciar"> 👢Iniciar Duelo </button>
-    <button id="btnJugador" disabled>🔘¡Dispara!</button>
+    <button id="btnIniciar"> 🧤Iniciar Duelo </button>
+    <button id="btnJugador" disabled>👉🏽¡Dispara!</button>
     <button id="btnCubrirse" disabled>🧱 Cubrirse</button>
+    <button id="btnTienda" disabled style="display: inline-block;" data-used="false">👖 Tienda</button>
   </div>
 
   <!-- Sonidos -->
-  <audio id="sndInicio" src="sonidos/inicio.wav"></audio>
+  <audio id="sndInicio" src="sonidos/inicio.mp3"></audio>
   <audio id="sndDisparo" src="sonidos/disparo.wav"></audio>
   <audio id="sndVictoria" src="sonidos/victoria.wav"></audio>
   <audio id="sndDerrota" src="sonidos/derrota.wav"></audio>
+  <audio id="sndCubrirse" src="sonidos/cubrirse.wav"></audio>
+  <audio id="sndTienda" src="sonidos/tienda.wav"></audio>
 
-  <script src="script.js" defer></script>
+  <script type="module" src="script.js" defer></script>
 </body>
 </html>

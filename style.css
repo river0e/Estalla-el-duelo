@@ -1,6 +1,11 @@
 body {
-  font-family: 'Rockwell', sans-serif;
-  background: linear-gradient(to bottom, rgba(238, 176, 126, 0.8), rgba(222, 184, 135, 0.8)), url('Imagen/Oeste.jpg');
+  font-family: "Rockwell", sans-serif;
+  background: linear-gradient(
+      to bottom,
+      rgba(238, 176, 126, 0.8),
+      rgba(222, 184, 135, 0.8)
+    ),
+    url("Imagen/Oeste.jpg");
   background-size: cover;
   background-position: center center;
   text-align: center;
@@ -8,20 +13,22 @@ body {
   color: #3e2f1c;
 }
 
-h1 {
-  font-size: 3em;
-  margin-bottom: 20px;
-}
-
 #nivel-info {
-  font-size: 1.2em;
-  margin: 10px 0 30px;
+  font-family: 'Bangers', cursive;
+  font-size: 20px;
+  color: #5a3b1a;
+  text-shadow: 1px 1px 0 #d2b48c;
+  text-align: center;
+  margin-top: 10px;
 }
 
 #mensaje {
-  font-size: 1.5em;
-  margin: 20px;
-  font-weight: bold;
+  font-family: 'Bangers', cursive;
+  font-size: 30px;
+  color: #5a3b1a;
+  text-shadow: 1px 1px 0 #d2b48c;
+  text-align: center;
+  margin-top: 10px;
 }
 
 #zona-control {
@@ -33,23 +40,19 @@ h1 {
   flex-wrap: wrap;
 }
 
-/* Animación para hacer girar el botón */
-@keyframes giroLoco {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* Clase para hacer girar el botón */
-.girando {
-  animation: giroLoco 0.2s linear infinite;
+#tituloJuego {
+  font-family: "Ewert", cursive;
+  font-size: 60px;
+  color: #552e05; /* Marrón oscuro */
+  text-shadow: 2px 2px 0 #d2b48c, 2px 2px 0 #000; /* Sombra doble como grabado */
+  letter-spacing: 2px;
+  text-align: center;
+  margin-top: 30px;
 }
 
 /* --- Botones redondos iguales --- */
 button {
+  font-family: 'Fjalla One', sans-serif;
   font-size: 1.5em;
   /* Aumentar el tamaño del texto */
   width: 180px;
@@ -68,6 +71,11 @@ button {
   justify-content: center;
   font-weight: bold;
   /* Hacer el texto más fuerte */
+  text-shadow:
+  -1px -1px 0 #643713,
+   1px -1px 0 #643713,
+  -1px  1px 0 #643713,
+   1px  1px 0 #643713;
 }
 
 button:disabled {
@@ -89,5 +97,27 @@ button:active {
   /* Reducir un poco el tamaño al hacer clic */
   box-shadow: 0 4px 10px rgba(241, 186, 3, 0.788);
   /* Sombra más suave al hacer clic */
+}
 
+/* Animación para hacer girar el botón */
+@keyframes giroLoco {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.girando {
+  animation: rotar 1s linear infinite;
+}
+
+@keyframes rotar {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
