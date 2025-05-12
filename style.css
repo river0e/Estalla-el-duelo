@@ -14,7 +14,7 @@ body {
 }
 
 #nivel-info {
-  font-family: 'Bangers', cursive;
+  font-family: "Bangers", cursive;
   font-size: 20px;
   color: #5a3b1a;
   text-shadow: 1px 1px 0 #d2b48c;
@@ -23,7 +23,7 @@ body {
 }
 
 #mensaje {
-  font-family: 'Bangers', cursive;
+  font-family: "Bangers", cursive;
   font-size: 30px;
   color: #5a3b1a;
   text-shadow: 1px 1px 0 #d2b48c;
@@ -52,7 +52,7 @@ body {
 
 /* --- Botones redondos iguales --- */
 button {
-  font-family: 'Fjalla One', sans-serif;
+  font-family: "Fjalla One", sans-serif;
   font-size: 1.5em;
   /* Aumentar el tamaño del texto */
   width: 180px;
@@ -71,11 +71,8 @@ button {
   justify-content: center;
   font-weight: bold;
   /* Hacer el texto más fuerte */
-  text-shadow:
-  -1px -1px 0 #643713,
-   1px -1px 0 #643713,
-  -1px  1px 0 #643713,
-   1px  1px 0 #643713;
+  text-shadow: -1px -1px 0 #643713, 1px -1px 0 #643713, -1px 1px 0 #643713,
+    1px 1px 0 #643713;
 }
 
 button:disabled {
@@ -120,4 +117,19 @@ button:active {
   to {
     transform: rotate(360deg);
   }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(-100%); /* Empieza desde fuera de la pantalla */
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0); /* Termina en su posición original */
+    opacity: 1;
+  }
+}
+
+.anim-slide-in {
+  animation: slide-in 0.5s ease-out forwards; /* Aplicamos la animación */
 }

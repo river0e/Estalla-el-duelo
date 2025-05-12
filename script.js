@@ -70,7 +70,7 @@ function aumentarDificultad() {
     if (nivel >= 3) {
       maxX = 300;
       maxY = 300;
-      btnJugador.style.transform = "scale(0.9)"; // Nivel 3: hacerlo más pequeño
+      btnJugador.style.transform = "scale(0.5)"; // Nivel 3: hacerlo más pequeño
     }
 
     if (nivel >= 4) {
@@ -203,7 +203,7 @@ btnCubrirse.addEventListener("click", () => {
   sndCubrirse.play();
   disparosRestantes = Math.min(disparosRestantes + 2, 6);
   spanDisparos.textContent = disparosRestantes;
-  
+
 });
 
 // Función para cuando el jugador dispare
@@ -230,6 +230,7 @@ btnJugador.addEventListener("click", () => {
         nivel++;
         experiencia = 0;
         mensaje.textContent += " ¡Subiste de nivel!";
+        animarSlideIn(mensaje);
         // Llamar a aumentarDificultad solo si el nivel es 2, 3, 4...
         aumentarDificultad();
       }
@@ -293,3 +294,9 @@ btnTienda.addEventListener("click", () => {
     btnTienda.disabled = true;
   }
 });
+
+function animarSlideIn(elemento) {
+  elemento.classList.remove("anim-slide-in");
+  void elemento.offsetWidth; // Fuerza el reinicio de la animación
+  elemento.classList.add("anim-slide-in");
+}
