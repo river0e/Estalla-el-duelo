@@ -1,51 +1,54 @@
-let disparoDoble = false;
-let balasExtra = 0;
-let movimientoLento = false;
+let mejorasActivas = {
+  noRecarga: false,
+  experienciaRapida: false,
+  botonGrande: false
+};
 
-function aplicarMejora(nivel) {
-  if (nivel < 5) return; // No se permite la tienda antes del nivel 5
-
-  const mejoras = [
-    {
-      nombre: "🔫 Bala extra",
-      efecto: () => {
-        balasExtra++;
-        console.log("🛠️ Mejora aplicada: Bala extra. Total: ", balasExtra);
-      }
-    },
-    {
-      nombre: "⏱️ Movimiento más lento",
-      efecto: () => {
-        movimientoLento = true;
-        console.log("🛠️ Mejora aplicada: Movimiento más lento activado.");
-      }
-    },
-    {
-      nombre: "💥 Disparo doble",
-      efecto: () => {
-        disparoDoble = true;
-        console.log("🛠️ Mejora aplicada: Disparo doble activado.");
-      }
+const mejorasDisponibles = [
+  {
+    nombre: "🔫 No necesitas recargar",
+    descripcion: "Siempre tendrás 6 balas disponibles",
+    efecto: () => {
+      mejorasActivas.noRecarga = true;
+      console.log("🛠️ Mejora aplicada: No necesitas recargar");
     }
-  ];
+  },
+  {
+    nombre: "⚡ Experiencia rápida",
+    descripcion: "Subes de nivel con solo 3 puntos de experiencia",
+    efecto: () => {
+      mejorasActivas.experienciaRapida = true;
+      console.log("🛠️ Mejora aplicada: Experiencia rápida");
+    }
+  },
+  {
+    nombre: "🔼 Botón de disparo más grande",
+    descripcion: "El botón de disparo aumenta su tamaño",
+    efecto: () => {
+      mejorasActivas.botonGrande = true;
+      console.log("🛠️ Mejora aplicada: Botón de disparo más grande");
+    }
+  }
+];
 
-  const recompensa = mejoras[Math.floor(Math.random() * mejoras.length)];
-  recompensa.efecto();
+function aplicarMejoraAleatoria(nivel) {
+  if (nivel < 5) return null;
 
-  const mensaje = document.getElementById("mensaje");
-  mensaje.textContent = `🎁 ¡Has conseguido: ${recompensa.nombre}!`;
+  const mejorasPosibles = mejorasDisponibles.filter(mejora => {
+    const clave = mejora.nombre.split(" ")[1];
+    return !mejorasActivas[clave];
+  });
 
-  // Deshabilitar el botón de tienda 
-  const btnTienda = document.getElementById("btnTienda");
-  btnTienda.disabled = true;
+  if (mejorasPosibles.length === 0) return null;
+
+  const mejoraSeleccionada = mejorasPosibles[Math.floor(Math.random() * mejorasPosibles.length)];
+  mejoraSeleccionada.efecto();
+
+  return mejoraSeleccionada;
 }
 
-// Función para resetear las mejoras 
-function resetearMejoras() {
-  disparoDoble = false;
-  balasExtra = 0;
-  movimientoLento = false;
-  console.log("🔄 Las mejoras han sido reseteadas.");
+function obtenerMejorasActivas() {
+  return mejorasActivas;
 }
 
-export { aplicarMejora, disparoDoble, balasExtra, movimientoLento, resetearMejoras };
+export { aplicarMejoraAleatoria, obtenerMejorasActivas };

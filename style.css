@@ -9,7 +9,7 @@ body {
   background-size: cover;
   background-position: center center;
   text-align: center;
-  padding: 50px;
+  padding: 30px;
   color: #3e2f1c;
 }
 
@@ -23,6 +23,15 @@ body {
 }
 
 #mensaje {
+  font-family: "Bangers", cursive;
+  font-size: 30px;
+  color: #5a3b1a;
+  text-shadow: 1px 1px 0 #d2b48c;
+  text-align: center;
+  margin-top: 10px;
+}
+
+#password {
   font-family: "Bangers", cursive;
   font-size: 30px;
   color: #5a3b1a;
@@ -119,6 +128,7 @@ button:active {
   }
 }
 
+/* Animación para dar dinamismo a las letras y que veas cuando subes de nivel */
 @keyframes slide-in {
   from {
     transform: translateX(-100%); /* Empieza desde fuera de la pantalla */
@@ -132,4 +142,112 @@ button:active {
 
 .anim-slide-in {
   animation: slide-in 0.5s ease-out forwards; /* Aplicamos la animación */
+}
+
+/* Aplicamos la animación para cuando recibimos un disparo */
+@keyframes flash-disparo {
+  0% {
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+  25% {
+    background-color: rgba(255, 0, 0, 0.6);
+  }
+  50% {
+    background-color: rgba(255, 255, 0, 0.6);
+  }
+  75% {
+    background-color: rgba(255, 0, 0, 0.4);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+#pantalla-flash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 999;
+  background-color: transparent;
+}
+
+/* Aplicamos la animación game over */
+#gameover-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(
+    circle,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  color: red;
+  font-family: "Ewert", cursive;
+  font-size: 100px;
+  text-shadow: 4px 4px black;
+  animation: explosionZoom 0.8s ease-in-out forwards;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes explosionZoom {
+  0% {
+    transform: scale(0.2) rotate(-20deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(20deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+#telon-izquierdo,
+#telon-derecho {
+  position: fixed;
+  top: 0;
+  width: 50vw;
+  height: 100vh;
+  background: url("Imagen/telon-oeste.png"), #5c2f0a;
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: 1001;
+  transform: translateX(0);
+  opacity: 0;
+  transition: transform 1.5s ease-in-out, opacity 0.5s;
+  pointer-events: none;
+}
+
+#telon-izquierdo {
+  left: 0;
+  transform: translateX(-100%);
+}
+
+#telon-derecho {
+  right: 0;
+  transform: translateX(100%);
+}
+
+.telon-activo {
+  opacity: 1;
+}
+
+.telon-izquierdo-activo {
+  transform: translateX(0);
+}
+
+.telon-derecho-activo {
+  transform: translateX(0);
 }
