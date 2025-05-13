@@ -413,7 +413,7 @@ function verificarPassword(pass) {
 
 
 function efectoDisparoPantalla() {
- 
+
   flash.style.animation = "flash-disparo 0.6s ease-in-out";
   setTimeout(() => {
     flash.style.animation = "none";
@@ -421,7 +421,6 @@ function efectoDisparoPantalla() {
 }
 
 // Efecto cuando es GAME OVER
-
 function mostrarGameOver() {
   juegoTerminado = true;
   mensaje.textContent = "☠️ GAME OVER - Has perdido el juego";
@@ -436,18 +435,79 @@ function mostrarGameOver() {
   clearInterval(parpadeoInterval);
   clearTimeout(timeoutReaccion);
 
-  // Activar telones
-  const telonIzq = document.getElementById("telon-izquierdo");
-  const telonDer = document.getElementById("telon-derecho");
+  // Mostrar el cartel
+  const cartel = document.getElementById("cartel-gameover");
+  cartel.style.display = "flex";
 
-  telonIzq.classList.add("telon-activo", "telon-izquierdo-activo");
-  telonDer.classList.add("telon-activo", "telon-derecho-activo");
-
-  // Mostrar overlay con retraso para dramatismo
+  // Asegurar que clase para animar se aplica después de renderizar
   setTimeout(() => {
-    const overlay = document.getElementById("gameover-overlay");
-    overlay.style.display = "flex";
-    overlay.style.pointerEvents = "auto";
-    overlay.style.opacity = "1";
-  }, 1600);
+    cartel.classList.add("mostrar");
+  }, 50);
+}
+
+document.getElementById("btnReiniciar").addEventListener("click", () => {
+  const cartel = document.getElementById("cartel-gameover");
+  cartel.classList.remove("mostrar");
+  setTimeout(() => {
+    cartel.style.display = "none";
+    reiniciarJuego(); // Asegúrate de tener esta función implementada
+  }, 500);
+});
+
+function reiniciarJuego() {
+  console.log("🔄 Reiniciando juego...");
+
+  // Reiniciar estado
+  nivel = 1;
+  experiencia = 0;
+  disparosRestantes = 6;
+  derrotasSeguidas = 0;
+  juegoTerminado = false;
+
+  resetearMejoras();
+
+  // Reiniciar flags
+  puedeDisparar = false;
+  disparoJugador = false;
+  disparoCPU = false;
+  cubierto = false;
+
+  // Actualizar UI
+  mensaje.textContent = "Presiona Iniciar Duelo";
+  spanNivel.textContent = nivel;
+  spanExp.textContent = experiencia;
+  spanDisparos.textContent = disparosRestantes;
+
+  // Botones
+  [btnJugador, btnCubrirse].forEach(btn => btn.disabled = true);
+  btnIniciar.disabled = false;
+  btnTienda.disabled = true;
+  btnTienda.dataset.used = "false";
+
+  // Limpiar estilos
+  Object.assign(btnJugador.style, {
+    position: "static",
+    transform: "",
+    opacity: "1",
+    left: "",
+    top: ""
+  });
+  btnJugador.classList.remove("girando");
+
+  // Limpiar timers y efectos
+  [moverBotonInterval, parpadeoInterval].forEach(clearInterval);
+  clearTimeout(timeoutReaccion);
+  moverBotonInterval = parpadeoInterval = null;
+  flash.style.animation = "none";
+
+  // Reaplicar dificultad inicial
+  aumentarDificultad();
+}
+
+function resetearMejoras() {
+  const mejoras = obtenerMejorasActivas();
+  mejoras.botonGrande = false;
+  mejoras.noRecarga = false;
+  mejoras.experienciaRapida = false;
+  mejoras.movimientoLento = false;
 }

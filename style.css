@@ -84,6 +84,13 @@ button {
     1px 1px 0 #643713;
 }
 
+/* Estilo para el botón dentro del cartel de GAME OVER */
+#cartel-gameover #btnReiniciar {
+  width: 150px; /* Un poco más grande */
+  height: 150px; /* Un poco más grande */
+  margin-top: 5px; /* Separación con el texto */
+}
+
 button:disabled {
   background-color: #c0a080;
   cursor: not-allowed;
@@ -175,79 +182,63 @@ button:active {
 }
 
 /* Aplicamos la animación game over */
-#gameover-overlay {
+#cartel-gameover {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: radial-gradient(
-    circle,
-    rgba(0, 0, 0, 0.9) 0%,
-    rgba(0, 0, 0, 1) 100%
-  );
+  background-color: rgba(0, 0, 0, 0.7); /* Oscurecer fondo */
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
-  color: red;
-  font-family: "Ewert", cursive;
-  font-size: 100px;
-  text-shadow: 4px 4px black;
-  animation: explosionZoom 0.8s ease-in-out forwards;
-  opacity: 0;
+  z-index: 1002;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
 }
 
-@keyframes explosionZoom {
+#cartel-gameover.mostrar {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#texto-gameover {
+  font-family: "Bangers", cursive;
+  font-size: 60px;
+  color: #3e2f1ca9;
+  text-shadow: 2px 2px black;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+/* Animación para que el cartel entre con más dinamismo */
+@keyframes entradaCartel {
   0% {
-    transform: scale(0.2) rotate(-20deg);
+    transform: scale(0.5) rotate(45deg);
     opacity: 0;
   }
   50% {
-    opacity: 1;
-    transform: scale(1.2) rotate(20deg);
+    opacity: 0.5;
+    transform: scale(1.2) rotate(15deg);
   }
   100% {
-    transform: scale(1) rotate(0deg);
     opacity: 1;
+    transform: scale(1) rotate(0deg);
   }
 }
 
-#telon-izquierdo,
-#telon-derecho {
-  position: fixed;
-  top: 0;
-  width: 50vw;
-  height: 100vh;
-  background: url("Imagen/telon-oeste.png"), #5c2f0a;
-  background-size: cover;
+#cartel-contenido {
+  background-image: url("Imagen/sebusca.jpg");
+  background-size: contain;
   background-repeat: no-repeat;
-  z-index: 1001;
-  transform: translateX(0);
-  opacity: 0;
-  transition: transform 1.5s ease-in-out, opacity 0.5s;
-  pointer-events: none;
-}
-
-#telon-izquierdo {
-  left: 0;
-  transform: translateX(-100%);
-}
-
-#telon-derecho {
-  right: 0;
-  transform: translateX(100%);
-}
-
-.telon-activo {
-  opacity: 1;
-}
-
-.telon-izquierdo-activo {
-  transform: translateX(0);
-}
-
-.telon-derecho-activo {
-  transform: translateX(0);
+  width: 425px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: entradaCartel 1.5s ease-out forwards;
+  position: relative;
+  gap: 10px; /* Espacio entre texto y botón */
 }
