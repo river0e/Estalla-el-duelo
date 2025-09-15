@@ -1,72 +1,64 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Duelo del Oeste</title>
-    <link rel="stylesheet" href="style.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Ewert&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bangers&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <h1 id="tituloJuego">🌵 Estalla el duelo 🌵</h1>
-    <p id="mensaje">Presiona "Iniciar Duelo"</p>
 
-    <div>
-      <label for="password"></label>
-      <input
-        type="text"
-        id="password"
-        placeholder="Introduce la contraseña aquí"
-      />
+<head>
+  <meta charset="UTF-8" />
+  <title>Duelo del Oeste</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Ewert&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+  <p id="mensaje">Presiona "Iniciar Duelo" para empezar</p>
+
+  <div id="nivel-info">
+    <p><span class="icon">✪</span> Nivel actual: <span id="nivel">1</span></p>
+    <p><span class="icon">⍟</span> Experiencia para subir de nivel: <span id="exp">0</span>/5</p>
+    <p><span class="icon">☮</span> Cúbrete para recargar.</p>
+    <p>𒀭 Disparos restantes: <span id="disparos">6</span></p>
+  </div>
+
+  <div class="campo-password">
+    <label for="password"></label>
+    <input type="password" id="password" placeholder="Introduce la contraseña aquí" />
+  </div>
+
+
+  <div id="zona-control">
+    <button id="btnIniciar"><span class="icon">✶</span>Iniciar Duelo</button>
+    <button id="btnJugador" disabled>
+      <span class="icon">⚙︎</span>¡Dispara!
+    </button>
+    <button id="btnCubrirse" disabled>
+      <span class="icon">☮ </span> Cubrirse
+    </button>
+    <button id="btnTienda" disabled style="display: inline-block" data-used="false">
+      <span class="icon">⚿</span> Tienda
+    </button>
+  </div>
+
+  <!-- Sonidos -->
+  <audio id="sndInicio" src="sonidos/inicio.mp3"></audio>
+  <audio id="sndDisparo" src="sonidos/disparo.wav"></audio>
+  <audio id="sndVictoria" src="sonidos/victoria.wav"></audio>
+  <audio id="sndDerrota" src="sonidos/derrota.wav"></audio>
+  <audio id="sndCubrirse" src="sonidos/cubrirse.wav"></audio>
+  <audio id="sndTienda" src="sonidos/tienda.wav"></audio>
+  <audio id="sndGameOver" src="sonidos/gameOver.mp3"></audio>
+
+  <!-- Efectos -->
+  <div id="pantalla-flash"></div>
+  <div id="cartel-gameover" style="display: none">
+    <div id="cartel-contenido">
+      <div id="texto-gameover">GAME OVER</div>
+      <button id="btnReiniciar">♻︎ Reintentar</button>
     </div>
+  </div>
 
-    <div id="nivel-info">
-      <p>🐮 Nivel: <span id="nivel">1</span></p>
-      <p>🏜️ Experiencia: <span id="exp">0</span>/5</p>
-      <p>💥 Disparos restantes: <span id="disparos">6</span></p>
-    </div>
+  <link rel="stylesheet" href="animaciones.css" />
+  <script type="module" src="script.js" defer></script>
+</body>
 
-    <div id="zona-control">
-      <button id="btnIniciar">🧤Iniciar Duelo</button>
-      <button id="btnJugador" disabled>👉🏽¡Dispara!</button>
-      <button id="btnCubrirse" disabled>🧱 Cubrirse</button>
-      <button
-        id="btnTienda"
-        disabled
-        style="display: inline-block"
-        data-used="false"
-      >
-        👖 Tienda
-      </button>
-    </div>
-
-    <!-- Sonidos -->
-    <audio id="sndInicio" src="sonidos/inicio.mp3"></audio>
-    <audio id="sndDisparo" src="sonidos/disparo.wav"></audio>
-    <audio id="sndVictoria" src="sonidos/victoria.wav"></audio>
-    <audio id="sndDerrota" src="sonidos/derrota.wav"></audio>
-    <audio id="sndCubrirse" src="sonidos/cubrirse.wav"></audio>
-    <audio id="sndTienda" src="sonidos/tienda.wav"></audio>
-
-    <!-- Efectos -->
-    <div id="pantalla-flash"></div>
-    <div id="cartel-gameover" style="display: none">
-      <div id="cartel-contenido">
-        <div id="texto-gameover">GAME OVER</div>
-        <button id="btnReiniciar">🔄 Reintentar</button>
-      </div>
-    </div>
-
-    <script type="module" src="script.js" defer></script>
-  </body>
 </html>

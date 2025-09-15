@@ -1,4 +1,4 @@
-import { aplicarMejoraAleatoria, obtenerMejorasActivas } from "./tienda.js";
+import { aplicarMejoraAleatoria, obtenerMejorasActivas, resetearMejoras } from "./tienda.js";
 
 console.log("script.js cargado correctamente");
 
@@ -14,22 +14,25 @@ const sndVictoria = document.getElementById("sndVictoria");
 const sndDerrota = document.getElementById("sndDerrota");
 const sndTienda = document.getElementById("sndTienda");
 const sndCubrirse = document.getElementById("sndCubrirse");
+const sndGameOver = document.getElementById("sndGameOver");
 
 const overlay = document.getElementById("gameover-overlay");
 const flash = document.getElementById("pantalla-flash");
 
-
+let juegoTerminado = true;
 let puedeDisparar = false;
 let disparoJugador = false;
 let disparoCPU = false;
-let cubierto = false; // Si el jugador se cubrió
+let cubierto = false;
 let nivel = 1;
 let experiencia = 0;
-let disparosRestantes = 6; // Cargador inicial con 6 disparos
-let timeoutReaccion; // Controla el tiempo de reacción del jugador
+let disparosRestantes = 6;
+let timeoutReaccion;
 let parpadeoInterval = null;
 let derrotasSeguidas = 0;
-let juegoTerminado = false;
+let chalecoActivo = false;
+let disparoAntesDeTiempoUsado = false;
+
 
 const spanNivel = document.getElementById("nivel");
 const spanExp = document.getElementById("exp");
@@ -38,21 +41,14 @@ const spanDisparos = document.getElementById("disparos"); // Para mostrar los di
 let moverBotonInterval = null;
 
 function aumentarDificultad() {
-  const mejoras = obtenerMejorasActivas(); // Obtener mejoras activas
+  const mejoras = obtenerMejorasActivas();
 
-  // 1. Ajuste de tiempos con mejoras
-  let tiempoEsperaMin = Math.max(1500 - (nivel - 1) * 200, 800);
-  let tiempoEsperaMax = Math.max(2500 - (nivel - 1) * 300, 1500);
-
-  if (mejoras.movimientoLento) {
-    tiempoEsperaMin += 300;
-    tiempoEsperaMax += 500;
-    console.log("🐌 Mejora: Movimiento lento activo (+300/+500ms)");
-  }
-
+  // --- 1. TIEMPOS DE REACCIÓN PROGRESIVOS ---
+  let tiempoEsperaMin = Math.max(1500 - (nivel - 1) * 150, 800);
+  let tiempoEsperaMax = Math.max(2500 - (nivel - 1) * 250, 1500);
   console.log(`🎯 Nivel ${nivel} - Tiempo de espera entre ${tiempoEsperaMin}ms y ${tiempoEsperaMax}ms`);
 
-  // 2. Disparos iniciales con mejoras
+  // --- 2. DISPAROS INICIALES ---
   if (experiencia === 0) {
     const baseDisparos = Math.max(6 - (nivel - 1), 2);
     disparosRestantes = mejoras.noRecarga ? 6 : baseDisparos;
@@ -60,101 +56,67 @@ function aumentarDificultad() {
     console.log(`🔫 Disparos: ${disparosRestantes} (noRecarga=${mejoras.noRecarga})`);
   }
 
-  // 3. Limpiar intervalos y estilos previos
+  // --- 3. LIMPIEZA DE ESTADO ---
   clearInterval(moverBotonInterval);
   clearInterval(parpadeoInterval);
   moverBotonInterval = null;
   parpadeoInterval = null;
-
   btnJugador.style.position = "static";
   btnJugador.classList.remove("girando");
   btnJugador.style.opacity = "1";
+  btnJugador.style.transform = "";
 
-  // 4. Aplicar tamaño del botón según mejoras y nivel
-  if (nivel >= 3) {
-    let maxX = 300;
-    let maxY = 300;
+  // --- 4. AJUSTE DE MOVIMIENTO ---
+  let maxX = 200 + (nivel - 1) * 50; // aumenta progresivamente
+  let maxY = 200 + (nivel - 1) * 50;
+  let intervaloMovimiento = Math.max(900 - (nivel - 1) * 50, 400);
 
-    if (mejoras.botonGrande) {
-      btnJugador.style.transform = "scale(2.2)";
-      console.log("🔼 Mejora: Botón grande activado y persistente");
+  // Nivel 3+: botón más pequeño
+  if (nivel >= 3) btnJugador.style.transform = "scale(0.5)";
+
+  // Nivel 4+: giro
+  if (nivel >= 4) btnJugador.classList.add("girando");
+
+  // Nivel 6+: parpadeo enemigo
+  if (nivel >= 6) {
+    parpadeoInterval = setInterval(() => {
+      btnJugador.style.opacity = btnJugador.style.opacity === "0.3" ? "1" : "0.3";
+    }, 500);
+  }
+
+  // Nivel 8: parpadeo jugador
+  if (nivel === 8) {
+    parpadeoInterval = setInterval(() => {
+      btnJugador.style.opacity = btnJugador.style.opacity === "0" ? "1" : "0";
+    }, 500);
+  }
+
+  // Nivel 9: movimiento más rápido y errático
+  moverBotonInterval = setInterval(() => {
+    let randomX, randomY;
+    if (nivel === 9) {
+      randomX = Math.floor(Math.random() * maxX);
+      randomY = Math.floor(Math.random() * maxY);
+    } else if (nivel >= 7) {
+      // Movimiento sinusoidal normal
+      randomX = Math.floor((Math.sin(Date.now() / 100) * maxX) / 2 + maxX / 2);
+      randomY = Math.floor((Math.cos(Date.now() / 100) * maxY) / 2 + maxY / 2);
     } else {
-      btnJugador.style.transform = "scale(0.5)";
-      console.log("🔍 Nivel 3+: Botón más pequeño sin mejora");
+      randomX = Math.floor(Math.random() * maxX);
+      randomY = Math.floor(Math.random() * maxY);
     }
 
-    console.log("🔍 Nivel 3+: Ajuste de tamaño del botón según mejoras");
-  } else {
-    if (mejoras.botonGrande) {
-      btnJugador.style.transform = "scale(2.2)";
-      console.log("🔼 Mejora: Botón grande activado (nivel < 3)");
-    } else {
-      btnJugador.style.transform = ""; // Sin escala si no hay mejora
-    }
-  }
+    btnJugador.style.position = "absolute";
+    btnJugador.style.left = `${randomX}px`;
+    btnJugador.style.top = `${randomY}px`;
+  }, intervaloMovimiento);
 
-  // 5. Movimiento y efectos por nivel
-  if (nivel >= 2) {
-    const intervaloMovimiento = nivel >= 10 ? 300 : 800;
-    let maxX = 200;
-    let maxY = 200;
+  console.log(`🏃 Movimiento cada ${intervaloMovimiento}ms en rango ${maxX}x${maxY}px`);
 
-    if (nivel >= 3) {
-      maxX = 300;
-      maxY = 300;
-      if (!mejoras.botonGrande) {
-        btnJugador.style.transform = "scale(0.5)";
-      }
-      console.log("🔍 Nivel 3+: Botón más pequeño y mayor rango de movimiento");
-    }
-
-    if (nivel >= 4) {
-      maxX = 400;
-      maxY = 400;
-      btnJugador.classList.add("girando");
-      console.log("🌀 Nivel 4+: Giro activado");
-    }
-
-    if (nivel >= 5) {
-      parpadeoInterval = setInterval(() => {
-        btnJugador.style.opacity = btnJugador.style.opacity === "0.3" ? "1" : "0.3";
-      }, 500);
-      console.log("✨ Nivel 5+: Parpadeo activado");
-    }
-
-    moverBotonInterval = setInterval(() => {
-      let randomX, randomY;
-
-      if (nivel >= 6) {
-        randomX = Math.floor((Math.sin(Date.now() / 100) * maxX) / 2 + maxX / 2);
-        randomY = Math.floor((Math.cos(Date.now() / 100) * maxY) / 2 + maxY / 2);
-        console.log("🔄 Nivel 6+: Movimiento sinusoidal");
-      } else {
-        randomX = Math.floor(Math.random() * maxX);
-        randomY = Math.floor(Math.random() * maxY);
-      }
-
-      btnJugador.style.position = "absolute";
-      btnJugador.style.left = `${randomX}px`;
-      btnJugador.style.top = `${randomY}px`;
-    }, intervaloMovimiento);
-
-    console.log(`🏃 Movimiento cada ${intervaloMovimiento}ms en rango ${maxX}x${maxY}px`);
-  }
-
-  // 6. Tiempo para enemigo 
-  let tiempoMaximoBase = Math.random() * 3000 + 2000;
-  let tiempoMaximo = tiempoMaximoBase;
-
-  if (nivel >= 5) {
-    tiempoMaximo = Math.max(tiempoMaximoBase - 1000, 1000);
-    console.log("⚡ Nivel 5+: Enemigo más rápido");
-  }
-
-  if (mejoras.movimientoLento) {
-    tiempoMaximo += 500;
-    console.log("🐌 Mejora: enemigo más lento por movimientoLento");
-  }
+  // --- 5. TIEMPOS PARA EL ENEMIGO ---
+  const tiempoMaximoBase = Math.random() * 3000 + 2000;
+  let tiempoMaximo = tiempoMaximoBase - (nivel - 1) * 100; // CPU más rápida progresivamente
+  tiempoMaximo = Math.max(tiempoMaximo, 1000);
 
   return {
     tiempoEsperaMin,
@@ -197,23 +159,37 @@ btnIniciar.addEventListener("click", () => {
       Math.random() * (tiempoEsperaMax - tiempoEsperaMin) + tiempoEsperaMin;
 
     timeoutReaccion = setTimeout(() => {
-      console.log("⏰ Se ha acabado el tiempo para disparar...");
+      console.log("⏱︎ Se ha acabado el tiempo para disparar...");
 
       if (!disparoJugador && !cubierto) {
-        mensaje.textContent = "💀 La máquina te disparó primero...";
+        const mejoras = obtenerMejorasActivas();  // Obtener las mejoras activas
+
+        // Verificar si el chaleco antibalas está activo y si es el primer disparo
+        if (mejoras.chalecoAntibalas && !chalecoActivo) {
+          console.log("❤︎ ¡Sobrevives al disparo gracias al chaleco antibalas!");
+          chalecoActivo = true; // Desactivar el chaleco después del primer impacto
+          mensaje.textContent = "❤︎ ¡Sobrevives al disparo gracias al chaleco antibalas!";
+          return; // Terminar la función para evitar que se ejecute el código de derrota
+        }
+
+        mensaje.textContent = "☠︎ La máquina te disparó primero...";
         sndDerrota.play();
         efectoDisparoPantalla();
         disparoCPU = true;
 
         derrotasSeguidas++; // Aumentamos derrotas
-        if (derrotasSeguidas >= 3) {
-          mostrarGameOver(); // GAME OVER después de 3 derrotas seguidas
+
+        const mejorasActuales = obtenerMejorasActivas();
+        const limiteDerrotas = mejoras.instintoSupervivencia ? 5 : 3;
+
+        if (derrotasSeguidas >= limiteDerrotas) {
+          mostrarGameOver();
           return;
         }
 
         if (experiencia > 1) {
           experiencia--;
-          mensaje.textContent += " Has perdido un punto de experiecia...";
+          mensaje.textContent += " Has perdido un punto de experiencia...";
         }
 
         spanNivel.textContent = nivel;
@@ -235,9 +211,20 @@ btnIniciar.addEventListener("click", () => {
 btnCubrirse.addEventListener("click", () => {
   console.log("Jugador se cubre");
 
+
   if (disparoCPU) {
+    const mejoras = obtenerMejorasActivas();  // Obtener las mejoras activas
+
+    // Verificar si el chaleco antibalas está activo y si es el primer disparo
+    if (mejoras.chalecoAntibalas && !chalecoActivo) {
+      console.log("❤︎ ¡Chaleco antibalas activado! Sobrevives al primer disparo enemigo");
+      chalecoActivo = true; // Desactivar el chaleco después del primer impacto
+      mensaje.textContent = "❤︎ ¡Sobrevives al disparo gracias al chaleco antibalas!";
+      return; // Terminar la función para evitar que se ejecute el código de derrota
+    }
+
     mensaje.textContent =
-      "💀 Te cubriste demasiado tarde... ¡La máquina ya había disparado!";
+      "☠︎ Te cubriste demasiado tarde... ¡La máquina ya había disparado!";
     sndDerrota.play();
     btnJugador.disabled = true;
     btnCubrirse.disabled = true;
@@ -256,11 +243,10 @@ btnCubrirse.addEventListener("click", () => {
   clearTimeout(timeoutReaccion);
   btnJugador.disabled = true;
   btnCubrirse.disabled = true;
-  mensaje.textContent = "🧱 Te has cubierto. Ganaste 2 balas extra.";
+  mensaje.textContent = "☮ Te has cubierto. Ganaste 2 balas extra.";
   sndCubrirse.play();
   disparosRestantes = Math.min(disparosRestantes + 2, 6);
   spanDisparos.textContent = disparosRestantes;
-
 });
 
 // Función para cuando el jugador dispare
@@ -280,14 +266,14 @@ btnJugador.addEventListener("click", () => {
       disparosRestantes--;
     }
 
-    mensaje.textContent = "🏆 ¡Disparaste primero! Has ganado el duelo.";
+    mensaje.textContent = "𒀭 ¡Disparaste primero! Has ganado el duelo.";
     btnJugador.disabled = true;
     btnCubrirse.disabled = true;
     sndVictoria.play();
 
     if (!cubierto) {
-      experiencia++;
-      const expNecesaria = mejoras.experienciaRapida ? 3 : 5;
+       experiencia += mejoras.municionPerforante ? 2 : 1;  
+       const expNecesaria = mejoras.experienciaRapida ? 3 : 5;
 
       if (experiencia >= expNecesaria) {
         nivel++;
@@ -309,18 +295,24 @@ btnJugador.addEventListener("click", () => {
     spanNivel.textContent = nivel;
     spanExp.textContent = experiencia;
     spanDisparos.textContent = mejoras.noRecarga ? 6 : disparosRestantes;
-  } else if (!puedeDisparar) {
-    console.log("Disparo antes de tiempo");
-    mensaje.textContent = "😵 ¡Disparaste antes de tiempo!";
-    btnJugador.disabled = true;
-    btnCubrirse.disabled = true;
-    sndDerrota.play();
 
-    if (experiencia > 0) {
-      experiencia--;
-      mensaje.textContent += " Has perdido 1 de experiencia.";
+  } else if (!puedeDisparar) {
+    const mejoras = obtenerMejorasActivas();
+
+    if (mejoras.menteFria && !disparoAntesDeTiempoUsado) {
+      // Primera vez, no pierdes experiencia
+      disparoAntesDeTiempoUsado = true;
+      mensaje.textContent = "֍ Mente Fría te protege de perder experiencia esta vez.";
+    } else {
+      // Pierdes experiencia normalmente
+      mensaje.textContent = "𒀯 ¡Disparaste antes de tiempo!";
+      sndDerrota.play();
+      if (experiencia > 0) experiencia--;
+      mensaje.textContent += "◉ Has perdido 1 de experiencia.";
     }
 
+    btnJugador.disabled = true;
+    btnCubrirse.disabled = true;
     spanNivel.textContent = nivel;
     spanExp.textContent = experiencia;
     spanDisparos.textContent = mejoras.noRecarga ? 6 : disparosRestantes;
@@ -332,25 +324,11 @@ btnJugador.addEventListener("click", () => {
 btnTienda.addEventListener("click", () => {
   if (nivel >= 5) {
     const mejora = aplicarMejoraAleatoria(nivel);
-
     if (mejora) {
-      mensaje.textContent = `🎁 ¡Has obtenido: ${mejora.nombre} (${mejora.descripcion})!`;
-
-      // Aplicar efectos visuales inmediatos
-      if (mejora.nombre.includes("grande")) {
-        btnJugador.style.transform = "scale(1.5)";
-      }
-
-      // Aplicar balas extra inmediatamente
-      if (mejora.nombre.includes("Balas extra")) {
-        disparosRestantes = Math.min(disparosRestantes + 2, 6);
-        const mejoras = obtenerMejorasActivas();
-        spanDisparos.textContent = mejoras.noRecarga ? 6 : disparosRestantes;
-      }
+      mensaje.textContent = `⚒︎ ¡Has obtenido: ${mejora.nombre} (${mejora.descripcion ?? ""})!`;
     } else {
-      mensaje.textContent = "ℹ️ Ya tienes todas las mejoras disponibles.";
+      mensaje.textContent = "𒉽 Ya tienes todas las mejoras disponibles.";
     }
-
     btnTienda.disabled = true;
   }
 });
@@ -381,10 +359,11 @@ function establecerNivel(nuevoNivel) {
   spanExp.textContent = experiencia;
 
   // Si se llega a nivel 5 o 10 con contraseña, activar tienda si no se ha usado
+  btnTienda.dataset.used = "false"; // Permitir usar tienda nuevamente si nivel se establece por contraseña
   if ((nivel === 5 || nivel === 10) && btnTienda.dataset.used === "false") {
     btnTienda.disabled = false;
     btnTienda.dataset.used = "true";
-    mostrarMensaje("🛒 ¡Puedes usar la tienda!");
+    mensaje.textContent = "☄︎ ¡Puedes usar la tienda!";
     sndTienda.play();
   }
 
@@ -400,17 +379,16 @@ function verificarPassword(pass) {
 
   if (passwordsValidas[pass] !== undefined) {
     establecerNivel(passwordsValidas[pass]);
-    mostrarMensaje("🔓 ¡Nivel desbloqueado!");
+    mostrarMensaje("ღ ¡Nivel desbloqueado!");
   } else {
-    mostrarMensaje("❌ Contraseña incorrecta");
+    mostrarMensaje("𒉽 Contraseña incorrecta");
   }
 
   function mostrarMensaje(texto) {
     mensaje.textContent = texto;
-    animarSlideIn(mensaje); // Ya existe esta función en tu script
+    animarSlideIn(mensaje);
   }
 }
-
 
 function efectoDisparoPantalla() {
 
@@ -423,8 +401,9 @@ function efectoDisparoPantalla() {
 // Efecto cuando es GAME OVER
 function mostrarGameOver() {
   juegoTerminado = true;
-  mensaje.textContent = "☠️ GAME OVER - Has perdido el juego";
-  sndDerrota.play();
+  mensaje.textContent = "☠︎ GAME OVER - Has perdido el juego";
+  sndGameOver.currentTime = 0;  // Rebobina al principio para evitar duplicados
+  sndGameOver.play();
 
   btnJugador.disabled = true;
   btnCubrirse.disabled = true;
@@ -455,7 +434,7 @@ document.getElementById("btnReiniciar").addEventListener("click", () => {
 });
 
 function reiniciarJuego() {
-  console.log("🔄 Reiniciando juego...");
+  console.log("♻︎ Reiniciando juego...");
 
   // Reiniciar estado
   nivel = 1;
@@ -471,6 +450,7 @@ function reiniciarJuego() {
   disparoJugador = false;
   disparoCPU = false;
   cubierto = false;
+  disparoAntesDeTiempoUsado = false;
 
   // Actualizar UI
   mensaje.textContent = "Presiona Iniciar Duelo";
@@ -502,12 +482,4 @@ function reiniciarJuego() {
 
   // Reaplicar dificultad inicial
   aumentarDificultad();
-}
-
-function resetearMejoras() {
-  const mejoras = obtenerMejorasActivas();
-  mejoras.botonGrande = false;
-  mejoras.noRecarga = false;
-  mejoras.experienciaRapida = false;
-  mejoras.movimientoLento = false;
 }
