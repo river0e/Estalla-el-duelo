@@ -48,6 +48,15 @@ body {
   line-height: 1.2; 
 }
 
+#nivel-info p:last-child {
+  display: flex;
+  align-items: center;  
+  gap: 8px;             
+  justify-content: center; 
+  margin-top: 5px;      
+}
+
+
 /* ====== Campo de contraseña ====== */
 .campo-password {
   display: inline-block;
@@ -124,6 +133,37 @@ button:active {
   box-shadow: 0 4px 10px rgba(224, 177, 25, 0.699);
 }
 
+
+#balas {
+  display: flex;
+  gap: 8px;
+  vertical-align: middle;
+  margin-left: 12px;
+}
+
+.bala {
+  width: 18px;
+  height: 28px;
+  border-radius: 40% 40% 30% 30%; /* forma de proyectil */
+  background: linear-gradient(145deg, #555, #222); /* casquillo vacío (acero oscuro) */
+  border: 2px solid #111;
+  box-shadow: inset 0 2px 3px rgba(255,255,255,0.2),
+              inset 0 -2px 3px rgba(0,0,0,0.6),
+              0 1px 2px rgba(0,0,0,0.4);
+  transition: 0.25s ease;
+}
+
+/* Bala activa: aspecto de plomo metálico */
+.bala.activa {
+  background: linear-gradient(160deg, #d9d9d9, #7e7e7e, #b5b5b5); 
+  border: 2px solid #666;
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.6),
+              inset 0 -2px 4px rgba(0,0,0,0.5),
+              0 0 8px rgba(200,200,200,0.6); /* brillo metálico */
+  transform: translateY(-2px) scale(1.05);
+}
+
+
 /* ====== Iconos ====== */
 .icon {
   opacity: 0.7;
@@ -131,83 +171,131 @@ button:active {
   margin-right: 8px;
   vertical-align: middle;
 }
+
 /* ====== Responsive para tablets ====== */
+
 @media (max-width: 768px) {
   body {
     padding: 5px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around; /* distribuye los elementos verticalmente */
+    justify-content: center; /* centra todo verticalmente */
     align-items: center;
     min-height: 100vh;
+    margin: 0;
   }
 
   #mensaje {
     font-size: 24px;
-    margin: 5px 0;
+    margin: 20px 0 10px 0; /* espacio superior ajustado */
   }
 
   #nivel-info {
     font-size: 20px;
     line-height: 1.2;
-    margin: 5px 0;
+    margin: 10px 0 5px 0;
+  }
+
+  #password {
+    margin-top: 5px; 
+    font-size: 16px;
   }
 
   #zona-control {
     gap: 10px;
-    flex-wrap: wrap;
     justify-content: center;
+    flex-direction: column;       
+    align-items: center; 
+    display: flex;  
+    margin-top: 15px;       
+  }
+
+  #boton-disparo-container {
+    order: -1; 
+    display: none; 
+    margin-bottom: 10px;
+    text-align: center;  
   }
 
   button {
     width: 120px;
     height: 120px;
-    font-size: 1em;              /* más pequeño */
+    font-size: 1em;              
     padding: 6px;
-    white-space: nowrap;         /* evita que el texto salte */
+    white-space: nowrap;         
     text-align: center;
-    -webkit-tap-highlight-color: transparent; /* quita flash gris en Android */
-    touch-action: manipulation;              /* mejor toque táctil */
+    -webkit-tap-highlight-color: transparent; 
+    touch-action: manipulation;              
     position: relative;
-  }
-
-  button::after {
-    content: "";
-    position: absolute;
-    top: -10px; bottom: -10px;
-    left: -10px; right: -10px;
   }
 
   .icon {
     font-size: 1.7rem;
     margin-right: 5px;
   }
+
+  #nivel-info p:last-child {
+    gap: 6px;          
+    margin-top: 4px;
+  }
+
+  #balas {
+    gap: 5px;
+  }
+
+  .bala {
+    width: 14px;
+    height: 22px;
+  }
 }
 
 /* ====== Responsive para móviles pequeños ====== */
 @media (max-width: 480px) {
   body {
-    justify-content: space-evenly; /* ocupa todo el alto disponible */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* centra verticalmente todo */
+    align-items: center;
+    min-height: 100vh;
+    padding: 5px;
+    margin: 0;
   }
 
   #mensaje {
     font-size: 20px;
-    margin: 5px 0;
+    margin: 15px 0 10px 0;
   }
 
   #nivel-info {
     font-size: 18px;
-    margin: 5px 0;
+    margin: 5px 0 3px 0;
+  }
+
+  #password {
+    margin-top: 3px;
+    font-size: 16px;
   }
 
   #zona-control {
-    gap: 8px;
+    gap: 10px;
+    justify-content: center;
+    flex-direction: column;       
+    align-items: center; 
+    display: flex;         
+    margin-top: 10px;
+  }
+
+  #boton-disparo-container {
+    order: -1; 
+    display: none;
+    margin-bottom: 10px;
+    text-align: center;  
   }
 
   button {
     width: 90px;
     height: 90px;
-    font-size: 0.85em;  /* aún más pequeño */
+    font-size: 0.85em;  
     padding: 4px;
     white-space: nowrap;
   }
@@ -216,4 +304,20 @@ button:active {
     font-size: 1.3rem;
     margin-right: 4px;
   }
+
+  #nivel-info p:last-child {
+    gap: 4px;
+    margin-top: 3px;
+  }
+
+  #balas {
+    gap: 4px;
+  }
+
+  .bala {
+    width: 12px;
+    height: 18px;
+  }
 }
+
+

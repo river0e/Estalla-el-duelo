@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Duelo del Oeste</title>
   <link rel="stylesheet" href="style.css" />
-   <link rel="stylesheet" href="animaciones.css" />
+  <link rel="stylesheet" href="animaciones.css" />
   <link href="https://fonts.googleapis.com/css2?family=Ewert&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet" />
@@ -18,8 +18,11 @@
   <div id="nivel-info">
     <p><span class="icon">✪</span> Nivel actual: <span id="nivel">1</span></p>
     <p><span class="icon">⍟</span> Experiencia para subir de nivel: <span id="exp">0</span>/5</p>
-    <p><span class="icon">☮</span> Cúbrete para recargar.</p>
-    <p>𒀭 Disparos restantes: <span id="disparos">6</span></p>
+    <p><span class="icon">☮</span> Cúbrete para recargar</p>
+    <p style="display: flex; align-items: center; gap: 6px;">
+      Cargador:
+      <span id="balas" class="balas"></span>
+    </p>
   </div>
 
   <div class="campo-password">
@@ -28,18 +31,23 @@
   </div>
 
 
-  <div id="zona-control">
+<div id="zona-control" style="display: flex; justify-content: space-between; align-items: center;">
+  <div id="zona-botones-izquierda" style="display: flex; gap: 10px;">
     <button id="btnIniciar"><span class="icon">✶</span>Iniciar Duelo</button>
-    <button id="btnJugador" disabled>
-      <span class="icon">⚙︎</span>¡Dispara!
-    </button>
     <button id="btnCubrirse" disabled>
       <span class="icon">☮ </span> Cubrirse
     </button>
-    <button id="btnTienda" disabled style="display: inline-block" data-used="false">
+    <button id="btnTienda" disabled data-used="false">
       <span class="icon">⚿</span> Tienda
     </button>
   </div>
+
+  <div id="boton-disparo-container" style="display: none;">
+    <button id="btnJugador">
+      <span class="icon">⚙︎</span>¡Dispara!
+    </button>
+  </div>
+</div>
 
   <!-- Sonidos -->
   <audio id="sndInicio" src="sonidos/inicio.mp3"></audio>
@@ -59,7 +67,7 @@
     </div>
   </div>
 
- 
+
   <script type="module" src="script.js" defer></script>
 </body>
 
