@@ -67,9 +67,9 @@ function aumentarDificultad() {
   btnJugador.style.transform = "";
 
   // --- 4. AJUSTE DE MOVIMIENTO ---
-  let maxX = 200 + (nivel - 1) * 50; // aumenta progresivamente
-  let maxY = 200 + (nivel - 1) * 50;
-  let intervaloMovimiento = Math.max(900 - (nivel - 1) * 50, 400);
+  let maxX = 200 + (nivel - 1) * 60; // aumenta progresivamente
+  let maxY = 200 + (nivel - 1) * 60;
+  let intervaloMovimiento = Math.max(900 - (nivel - 1) * 80, 120);
 
   // Nivel 3+: botón más pequeño
   if (nivel >= 3) btnJugador.style.transform = "scale(0.5)";
@@ -174,6 +174,9 @@ btnIniciar.addEventListener("click", () => {
 
         mensaje.textContent = "☠︎ La máquina te disparó primero...";
         sndDerrota.play();
+        if (navigator.vibrate) {
+          navigator.vibrate([200, 100, 200]);
+        }
         efectoDisparoPantalla();
         disparoCPU = true;
 
@@ -226,6 +229,9 @@ btnCubrirse.addEventListener("click", () => {
     mensaje.textContent =
       "☠︎ Te cubriste demasiado tarde... ¡La máquina ya había disparado!";
     sndDerrota.play();
+    if (navigator.vibrate) {
+      navigator.vibrate([200, 100, 200]);
+    }
     btnJugador.disabled = true;
     btnCubrirse.disabled = true;
 
@@ -272,8 +278,8 @@ btnJugador.addEventListener("click", () => {
     sndVictoria.play();
 
     if (!cubierto) {
-       experiencia += mejoras.municionPerforante ? 2 : 1;  
-       const expNecesaria = mejoras.experienciaRapida ? 3 : 5;
+      experiencia += mejoras.municionPerforante ? 2 : 1;
+      const expNecesaria = mejoras.experienciaRapida ? 3 : 5;
 
       if (experiencia >= expNecesaria) {
         nivel++;
@@ -307,6 +313,10 @@ btnJugador.addEventListener("click", () => {
       // Pierdes experiencia normalmente
       mensaje.textContent = "𒀯 ¡Disparaste antes de tiempo!";
       sndDerrota.play();
+      if (navigator.vibrate) {
+        navigator.vibrate([200, 100, 200]);
+      }
+
       if (experiencia > 0) experiencia--;
       mensaje.textContent += "◉ Has perdido 1 de experiencia.";
     }

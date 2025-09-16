@@ -5,17 +5,23 @@ html, body {
   padding: 0;
 }
 
+/* 🔹 Quita el flash gris en Android */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+
 body {
   display: flex;
   flex-direction: column;
-  justify-content: center; /* centra verticalmente */
-  align-items: center;     /* centra horizontalmente */
-  min-height: 100vh;       /* asegura que ocupe toda la altura */
+  justify-content: center; 
+  align-items: center;    
+  min-height: 100vh;      
   font-family: "Rockwell", sans-serif;
   background: linear-gradient(to bottom,
-      rgba(238, 176, 126, 0.8),
+      rgba(216, 153, 101, 0.8),
       rgba(222, 184, 135, 0.8)),
-    url("Imagen/Oeste.jpg");
+    url("Imagen/Oeste2.png");
   background-size: cover;
   background-position: center center;
   text-align: center;
@@ -39,7 +45,7 @@ body {
   text-shadow: 1px 1px 0 #d2b48c;
   text-align: center;
   margin-top: 5px;
-  line-height: 1.2; /* reduce espacio entre párrafos */
+  line-height: 1.2; 
 }
 
 /* ====== Campo de contraseña ====== */
@@ -95,10 +101,15 @@ button {
   font-weight: bold;
   text-shadow: -1px -1px 0 #643713, 1px -1px 0 #643713,
     -1px 1px 0 #643713, 1px 1px 0 #643713;
+  padding: 0 5px;  
+  /* 🔹 Evita que el texto salte a la siguiente línea */
+  white-space: nowrap;
+  /* 🔹 Mejora toque táctil */
+  touch-action: manipulation;
 }
 
 button:disabled {
-  background-color: #c0a080;
+  background-color: #c08b5680;
   cursor: not-allowed;
 }
 
@@ -110,14 +121,7 @@ button:hover:enabled {
 
 button:active {
   transform: scale(1.05);
-  box-shadow: 0 4px 10px rgba(241, 186, 3, 0.788);
-}
-
-/* Botón GAME OVER */
-#cartel-gameover #btnReiniciar {
-  width: 150px;
-  height: 150px;
-  margin-top: 5px;
+  box-shadow: 0 4px 10px rgba(224, 177, 25, 0.699);
 }
 
 /* ====== Iconos ====== */
@@ -127,8 +131,7 @@ button:active {
   margin-right: 8px;
   vertical-align: middle;
 }
-
-/* ====== Responsive para móviles ====== */
+/* ====== Responsive para tablets ====== */
 @media (max-width: 768px) {
   body {
     padding: 5px;
@@ -157,9 +160,22 @@ button:active {
   }
 
   button {
-    width: 140px;
-    height: 140px;
-    font-size: 1.1em;
+    width: 120px;
+    height: 120px;
+    font-size: 1em;              /* más pequeño */
+    padding: 6px;
+    white-space: nowrap;         /* evita que el texto salte */
+    text-align: center;
+    -webkit-tap-highlight-color: transparent; /* quita flash gris en Android */
+    touch-action: manipulation;              /* mejor toque táctil */
+    position: relative;
+  }
+
+  button::after {
+    content: "";
+    position: absolute;
+    top: -10px; bottom: -10px;
+    left: -10px; right: -10px;
   }
 
   .icon {
@@ -168,6 +184,7 @@ button:active {
   }
 }
 
+/* ====== Responsive para móviles pequeños ====== */
 @media (max-width: 480px) {
   body {
     justify-content: space-evenly; /* ocupa todo el alto disponible */
@@ -188,9 +205,11 @@ button:active {
   }
 
   button {
-    width: 110px;
-    height: 110px;
-    font-size: 1em;
+    width: 90px;
+    height: 90px;
+    font-size: 0.85em;  /* aún más pequeño */
+    padding: 4px;
+    white-space: nowrap;
   }
 
   .icon {
