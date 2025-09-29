@@ -61,7 +61,7 @@ const mejorasDisponibles = [
     descripcion: "Sobrevives al primer disparo enemigo.",
     efecto: () => {
       mejorasActivas.chalecoAntibalas = true;
-      chalecoActivo = false; // Reinicia el estado del chaleco
+      chalecoActivo = false; 
       console.log("⚒︎ Mejora aplicada: Chaleco Antibalas");
       mensaje.textContent += " ❤︎ Ahora sobrevives al primer disparo enemigo.";
     }

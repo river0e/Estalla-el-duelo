@@ -1,15 +1,15 @@
-/* ====== Reset y altura completa ====== */
+/* ================================================== */
+/* 🔹 RESET Y CONFIGURACIÓN BÁSICA */
+/* ================================================== */
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
 }
 
-/* 🔹 Quita el flash gris en Android */
 * {
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent; /* Quita flash gris Android */
 }
-
 
 body {
   display: flex;
@@ -18,18 +18,23 @@ body {
   align-items: center;    
   min-height: 100vh;      
   font-family: "Rockwell", sans-serif;
-  background: linear-gradient(to bottom,
-      rgba(216, 153, 101, 0.8),
-      rgba(222, 184, 135, 0.8)),
-    url("Imagen/Oeste2.png");
-  background-size: cover;
-  background-position: center center;
   text-align: center;
   padding: 5px;
   color: #3e2f1c;
+
+  background: linear-gradient(
+      to bottom,
+      rgba(216, 153, 101, 0.8),
+      rgba(222, 184, 135, 0.8)
+    ),
+    url("Imagen/Oeste2.png");
+  background-size: cover;
+  background-position: center center;
 }
 
-/* ====== Mensajes y niveles ====== */
+/* ================================================== */
+/* 🔹 MENSAJES Y NIVELES */
+/* ================================================== */
 #mensaje {
   font-family: "Bangers", cursive;
   font-size: 30px;
@@ -44,20 +49,21 @@ body {
   color: #5a3b1a;
   text-shadow: 1px 1px 0 #d2b48c;
   text-align: center;
-  margin-top: 5px;
+  margin-top: 0px;
   line-height: 1.2; 
 }
 
 #nivel-info p:last-child {
   display: flex;
   align-items: center;  
-  gap: 8px;             
   justify-content: center; 
-  margin-top: 5px;      
+  gap: 8px;             
+  margin-top: 0px;      
 }
 
-
-/* ====== Campo de contraseña ====== */
+/* ================================================== */
+/* 🔹 CAMPO DE CONTRASEÑA */
+/* ================================================== */
 .campo-password {
   display: inline-block;
   position: relative;
@@ -81,7 +87,9 @@ body {
   opacity: 1;
 }
 
-/* ====== Zona de botones ====== */
+/* ================================================== */
+/* 🔹 ZONA DE BOTONES */
+/* ================================================== */
 #zona-control {
   margin-top: 20px;
   display: flex;
@@ -95,26 +103,27 @@ button {
   margin-top: 10px;
   font-family: "Fjalla One", sans-serif;
   font-size: 1.3em;
+  font-weight: bold;
   width: 160px;
   height: 160px;
   border: none;
   border-radius: 50%;
-  background-color: #ff7f32;
-  color: #fff;
   cursor: pointer;
-  box-shadow: 0 6px 15px rgba(255, 127, 50, 0.6);
-  transition: all 0.3s ease;
+  padding: 0 5px;  
+  white-space: nowrap;
+  touch-action: manipulation;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
+
+  color: #fff;
+  background-color: #ff7f32;
   text-shadow: -1px -1px 0 #643713, 1px -1px 0 #643713,
-    -1px 1px 0 #643713, 1px 1px 0 #643713;
-  padding: 0 5px;  
-  /* 🔹 Evita que el texto salte a la siguiente línea */
-  white-space: nowrap;
-  /* 🔹 Mejora toque táctil */
-  touch-action: manipulation;
+               -1px 1px 0 #643713, 1px 1px 0 #643713;
+
+  box-shadow: 0 6px 15px rgba(255, 127, 50, 0.6);
+  transition: all 0.3s ease;
 }
 
 button:disabled {
@@ -133,7 +142,9 @@ button:active {
   box-shadow: 0 4px 10px rgba(224, 177, 25, 0.699);
 }
 
-
+/* ================================================== */
+/* 🔹 BALAS */
+/* ================================================== */
 #balas {
   display: flex;
   gap: 8px;
@@ -143,28 +154,68 @@ button:active {
 
 .bala {
   width: 18px;
-  height: 28px;
-  border-radius: 40% 40% 30% 30%; /* forma de proyectil */
-  background: linear-gradient(145deg, #555, #222); /* casquillo vacío (acero oscuro) */
+  height: 25px;
+  border-radius: 40% 40% 30% 30%; 
   border: 2px solid #111;
+  transition: 0.25s ease;
+
+  background: linear-gradient(145deg, #555, #222);
   box-shadow: inset 0 2px 3px rgba(255,255,255,0.2),
               inset 0 -2px 3px rgba(0,0,0,0.6),
               0 1px 2px rgba(0,0,0,0.4);
+}
+
+.bala.activa {
+  border: 2px solid #666;
+  transform: translateY(-2px) scale(1.05);
+
+  background: linear-gradient(160deg, #d9d9d9, #7e7e7e, #b5b5b5); 
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.6),
+              inset 0 -2px 4px rgba(0,0,0,0.5),
+              0 0 8px rgba(200,200,200,0.6);
+}
+
+/* ================================================== */
+/* 🔹 VIDAS */
+/* ================================================== */
+#vidas {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.vida {
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+  position: relative;
   transition: 0.25s ease;
 }
 
-/* Bala activa: aspecto de plomo metálico */
-.bala.activa {
-  background: linear-gradient(160deg, #d9d9d9, #7e7e7e, #b5b5b5); 
-  border: 2px solid #666;
-  box-shadow: inset 0 2px 4px rgba(255,255,255,0.6),
-              inset 0 -2px 4px rgba(0,0,0,0.5),
-              0 0 8px rgba(200,200,200,0.6); /* brillo metálico */
-  transform: translateY(-2px) scale(1.05);
+.vida.activa::before {
+  content: "❤︎";
+  color: #da4e3e;
+  display: inline-block;
+  vertical-align: middle;
+  transform-origin: center;
+  animation: latido 3s infinite;
 }
 
+.vida.perdida::before {
+  content: "✖︎";
+  color: #5a3b1a;
+  display: inline-block;
+}
 
-/* ====== Iconos ====== */
+@keyframes latido {
+  0%, 100% { transform: scale(1); }
+  25%, 75% { transform: scale(1.2); }
+  50% { transform: scale(1); }
+}
+
+/* ================================================== */
+/* 🔹 ICONOS */
+/* ================================================== */
 .icon {
   opacity: 0.7;
   font-size: 2rem;
@@ -172,22 +223,23 @@ button:active {
   vertical-align: middle;
 }
 
-/* ====== Responsive para tablets ====== */
-
+/* ================================================== */
+/* 🔹 RESPONSIVE - TABLETS */
+/* ================================================== */
 @media (max-width: 768px) {
   body {
     padding: 5px;
+    margin: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* centra todo verticalmente */
+    justify-content: center;
     align-items: center;
     min-height: 100vh;
-    margin: 0;
   }
 
   #mensaje {
     font-size: 24px;
-    margin: 20px 0 10px 0; /* espacio superior ajustado */
+    margin: 20px 0 10px 0;
   }
 
   #nivel-info {
@@ -203,11 +255,11 @@ button:active {
 
   #zona-control {
     gap: 10px;
-    justify-content: center;
-    flex-direction: column;       
-    align-items: center; 
-    display: flex;  
     margin-top: 15px;       
+    display: flex;  
+    flex-direction: column;       
+    justify-content: center;
+    align-items: center; 
   }
 
   #boton-disparo-container {
@@ -222,11 +274,11 @@ button:active {
     height: 120px;
     font-size: 1em;              
     padding: 6px;
-    white-space: nowrap;         
-    text-align: center;
-    -webkit-tap-highlight-color: transparent; 
-    touch-action: manipulation;              
     position: relative;
+    text-align: center;
+    white-space: nowrap;         
+    touch-action: manipulation;              
+    -webkit-tap-highlight-color: transparent; 
   }
 
   .icon {
@@ -247,18 +299,24 @@ button:active {
     width: 14px;
     height: 22px;
   }
+
+  #vidas {
+    gap: 2px;
+  }
 }
 
-/* ====== Responsive para móviles pequeños ====== */
+/* ================================================== */
+/* 🔹 RESPONSIVE - MÓVILES PEQUEÑOS */
+/* ================================================== */
 @media (max-width: 480px) {
   body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* centra verticalmente todo */
-    align-items: center;
-    min-height: 100vh;
     padding: 5px;
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
   }
 
   #mensaje {
@@ -278,11 +336,11 @@ button:active {
 
   #zona-control {
     gap: 10px;
-    justify-content: center;
-    flex-direction: column;       
-    align-items: center; 
-    display: flex;         
     margin-top: 10px;
+    display: flex;  
+    flex-direction: column;       
+    justify-content: center;
+    align-items: center; 
   }
 
   #boton-disparo-container {
@@ -318,6 +376,8 @@ button:active {
     width: 12px;
     height: 18px;
   }
+
+  #vidas {
+    gap: 2px;
+  }
 }
-
-
