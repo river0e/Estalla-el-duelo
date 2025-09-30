@@ -1,3 +1,38 @@
+#pantalla-inicial {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  z-index: 1000;
+
+  /* Usamos la misma imagen de fondo que el juego */
+  background: url("Imagen/Oeste3.png") center/cover no-repeat;
+
+  /* Filtro para gris */
+  filter: grayscale(80%) brightness(90%);
+}
+
+
+#pantalla-inicial h1 {
+  font-family: "Bangers", cursive;
+  font-size: 3em;
+  color: #5a3b1a;
+  text-shadow: 2px 2px #d2b48c;
+}
+
+#pantalla-inicial button {
+  font-family: "Fjalla One", sans-serif;
+  font-size: 1.5em;
+  width: 200px;
+  height: 200px;
+}
+
 /* ================================================== */
 /* 🔹 RESET Y CONFIGURACIÓN BÁSICA */
 /* ================================================== */

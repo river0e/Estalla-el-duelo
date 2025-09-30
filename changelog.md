@@ -4,6 +4,16 @@ Todos los cambios importantes de este proyecto se documentan en este archivo.
 
 ---
 
+## [v0.6] - 2025-05-12
+### 🎨 Mejoras Visuales y organización CSS
+
+- Sonido e imagen cambiado para Game Over
+- Oculto campo de contraseña
+
+
+🎯 Ajustes de balance y control
+- Cambio animaciones a CSS animaciones por organizar
+
 ## [v0.5] - 2025-05-12
 ### 🧠 Nueva lógica de Game Over y sistema de contraseña para los niveles
 

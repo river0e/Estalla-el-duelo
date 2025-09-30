@@ -116,6 +116,7 @@ body::-webkit-scrollbar-thumb {
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
+  box-sizing: border-box;
 }
 
 #cartel-gameover.mostrar {
@@ -134,7 +135,7 @@ body::-webkit-scrollbar-thumb {
 
 #texto-gameover {
   font-family: "Ewert", cursive;
-  font-size: 100px;
+  font-size: clamp(40px, 10vw, 100px);
   color: #b14614e3;
   text-shadow: 2px 2px black;
   text-align: center;

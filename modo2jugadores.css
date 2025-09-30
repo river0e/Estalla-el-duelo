@@ -1,0 +1,239 @@
+/* ================================================== */
+/* 🔹 MODO 2 JUGADORES - ESTILIZADO INDEPENDIENTE */
+/* ================================================== */
+#pantalla-2jug {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 20, 40, 0.95),
+    rgba(31, 51, 82, 0.9)
+  ),
+  url("Imagen/Oeste2_nocturno.png") center/cover no-repeat;
+  font-family: "Bangers", cursive;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+/* ------------------------- */
+/* 🔹 ZONA JUGADORES */
+#pantalla-2jug .zona-jugador {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: clamp(10px, 3vw, 20px);
+  font-size: clamp(16px, 2vw, 24px);
+  color: #e2e8ff;
+  text-shadow: 1px 1px 0 #101625;
+  min-height: 0;
+}
+
+#pantalla-2jug .stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(6px, 1vw, 12px);
+  flex-wrap: wrap;
+}
+
+/* ================================================== */
+/* 🔹 BALAS */
+/* ================================================== */
+#pantalla-2jug .balas {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  vertical-align: middle;
+  margin-left: 12px;
+}
+
+#pantalla-2jug .bala {
+  position: relative; /* Importante para ::after del fogonazo */
+  width: clamp(14px, 3vw, 20px);
+  height: clamp(20px, 4vw, 28px);
+  border-radius: 40% 40% 30% 30%;
+  border: 2px solid #111;
+  transition: 0.25s ease;
+
+  background: linear-gradient(145deg, #555, #222); /* mate, no brillante */
+  box-shadow: inset 0 2px 3px rgba(255,255,255,0.2),
+              inset 0 -2px 3px rgba(0,0,0,0.6),
+              0 1px 2px rgba(0,0,0,0.4);
+}
+
+#pantalla-2jug .bala.activa {
+  border: 1px solid #3d3d3d;
+  transform: translateY(-2px) scale(1.05);
+
+  background: linear-gradient(160deg, #d9d9d9, #7e7e7e, #b5b5b5);
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.6),
+              inset 0 -2px 4px rgba(0,0,0,0.5),
+              0 0 8px rgba(200,200,200,0.6);
+}
+
+/* Bala disparada: casi negra */
+#pantalla-2jug .bala.disparada {
+  background: linear-gradient(160deg, #111, #000, #222);
+  border: 2px solid #111;
+  box-shadow: inset 0 2px 2px rgba(0,0,0,0.6),
+              inset 0 -2px 3px rgba(0,0,0,0.8),
+              0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Fogonazo azul */
+#pantalla-2jug .bala.disparada::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(180,220,255,0.9) 0%, rgba(90,140,255,0.6) 40%, transparent 20%);
+  animation: fogonazo 0.25s ease-out forwards;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ------------------------- */
+/* 🔹 VIDAS */
+#pantalla-2jug .vidas {
+  display: flex;
+  flex-direction: row;
+  gap: clamp(4px, 2vw, 10px);
+  align-items: center;
+}
+
+#pantalla-2jug .vida {
+  width: clamp(20px, 4vw, 28px);
+  height: clamp(20px, 4vw, 28px);
+  position: relative;
+  transition: 0.25s ease;
+}
+
+#pantalla-2jug .vida.activa::before {
+  content: "❤︎";
+  color: #479ac4;
+  display: inline-block;
+  vertical-align: middle;
+  transform-origin: center;
+  animation: latido 2.5s infinite;
+}
+
+#pantalla-2jug .vida.perdida::before {
+  content: "✖︎";
+  color: #ffffff;
+}
+
+@keyframes latido {
+  0%, 100% { transform: scale(1); }
+  25%, 75% { transform: scale(1.2); }
+  50% { transform: scale(1); }
+}
+
+/* ------------------------- */
+/* 🔹 MENSAJE CENTRAL */
+#pantalla-2jug #mensaje-barrera {
+  font-size: clamp(18px, 4vw, 32px); /* tamaño base flexible */
+  color: #f0f4ff;
+  text-shadow: 2px 2px 0 #0f1522;
+  text-align: center;
+  padding: 5px;
+  max-width: 90%;         /* no ocupe más del 90% del ancho */
+  width: 90%;
+  line-height: 1.3;       /* mejora lectura */
+  word-wrap: break-word;
+  display: inline-block;   /* evita que estire todo el flex container */
+  vertical-align: middle;
+  animation: mensajeSuave 1.8s ease-in-out infinite alternate;
+  box-sizing: border-box;
+}
+
+/* Animación suave */
+@keyframes mensajeSuave {
+  0%   { transform: scale(1); opacity: 0.9; }
+  100% { transform: scale(1.05); opacity: 1; }
+}
+
+
+/* ------------------------- */
+/* 🔹 BOTONES */
+#pantalla-2jug .zona-botones {
+  display: flex;
+  justify-content: center;
+  gap: clamp(6px, 2vw, 12px);
+  margin: clamp(8px, 2vw, 10px) 0;
+  flex-wrap: wrap;
+}
+
+#pantalla-2jug button {
+  width: clamp(80px, 20vw, 160px);
+  height: clamp(80px, 20vw, 160px);
+  font-size: clamp(0.7em, 3vw, 1.2em);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background-color: #3c6eb3;
+  text-shadow: -1px -1px 0 #162743, 1px -1px 0 #162743,
+               -1px 1px 0 #162743, 1px 1px 0 #162743;
+  box-shadow: 0 6px 15px rgba(60, 110, 179, 0.6);
+  transition: all 0.3s ease;
+  touch-action: manipulation;
+}
+
+#pantalla-2jug button:disabled {
+  background-color: #2a3d5f;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+#pantalla-2jug button:hover:enabled {
+  background-color: #558de8;
+  transform: scale(1.1);
+  box-shadow: 0 10px 30px rgba(90, 140, 220, 0.8);
+}
+
+#pantalla-2jug button:active {
+  background-color: #7aa7ff;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(70, 100, 180, 0.7);
+}
+
+
+
+/* ------------------------- */
+/* 🔹 RESPONSIVE HORIZONTAL/VERTICAL */
+@media (max-width: 1024px) {
+  #pantalla-2jug {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  #pantalla-2jug .zona-jugador { font-size: clamp(14px, 3vw, 22px); padding: 12px; }
+  #pantalla-2jug #mensaje-barrera { font-size: clamp(16px, 5vw, 25px); }
+  #pantalla-2jug button { width: clamp(70px, 22vw, 140px); height: clamp(70px, 22vw, 140px); font-size: clamp(0.7em, 4vw, 1.2em); }
+  #pantalla-2jug .bala { width: clamp(12px, 4vw, 18px); height: clamp(18px, 5vw, 25px); }
+  #pantalla-2jug .vida { width: clamp(18px, 4vw, 24px); height: clamp(18px, 4vw, 24px); }
+}
+
+@media (max-width: 480px) {
+  #pantalla-2jug .zona-jugador { font-size: clamp(12px, 4vw, 20px); padding: 8px; }
+  #pantalla-2jug #mensaje-barrera { font-size: clamp(14px, 5vw, 24px); }
+  #pantalla-2jug button { width: clamp(60px, 30vw, 120px); height: clamp(60px, 30vw, 120px); font-size: clamp(0.6em, 5vw, 1.1em); }
+  #pantalla-2jug .bala { width: clamp(10px, 5vw, 16px); height: clamp(16px, 6vw, 22px); }
+  #pantalla-2jug .vida { width: clamp(16px, 5vw, 22px); height: clamp(16px, 5vw, 22px); }
+}
