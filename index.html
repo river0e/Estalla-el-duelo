@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Duelo del Oeste</title>
+  <title>Te reto a un duelo</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="animaciones.css" />
   <link rel="stylesheet" href="modo2jugadores.css" />
@@ -14,11 +14,14 @@
 </head>
 
 <body>
-
   <div id="pantalla-inicial">
-    <h1>Duelo del Oeste</h1>
-    <button id="btnCPU"><span class="icon">⚙︎</span> Duelo contra CPU</button>
-    <button id="btnLocal"><span class="icon">✦</span> Duelo VS</button>
+    <div id="cartel-inicial">
+      <h1>Te reto a un duelo</h1>
+    </div>
+    <div class="botones-inicio">
+      <button id="btnCPU"><span class="icon">⚙︎</span> Duelo CPU</button>
+      <button id="btnLocal" class="solo-movil"><span class="icon">✦</span> Duelo VS</button>
+    </div>
   </div>
 
   <div id="splash-container"></div>
@@ -82,45 +85,53 @@
   <script type="module" src="script.js" defer></script>
   <script type="module" src="modo2jugadores.js"></script>
 
-<!-- ==================================== -->
-<!--      MODO 2 JUGADORES LOCAL         -->
-<!-- ==================================== -->
-<div id="pantalla-2jug" style="display: none;">
+  <!-- ==================================== -->
+  <!--      MODO 2 JUGADORES LOCAL         -->
+  <!-- ==================================== -->
+  <div id="pantalla-2jug" style="display: none;">
 
-  <!-- Jugador 2 (arriba) -->
-  <div id="zona-j2" class="zona-jugador">
-    <div class="zona-botones">
-      <button id="btn-j2">⚙︎ ¡Dispara!</button>
-      <button id="btn-cubrir-j2" disabled>☮ Cubrirse</button>
+    <!-- Jugador 2 (arriba) -->
+    <div id="zona-j2" class="zona-jugador">
+      <p class="nombre-jugador">Jugador 2</p>
+      <div class="stats">
+        Cargador: <span id="balas-j2" class="balas"></span>
+        Vidas: <span id="vidas-j2" class="vidas"></span>
+        Exp: <span id="exp-j2">0</span>
+      </div>
+      <div class="zona-botones">
+        <button id="btn-cubrir-j2" disabled>☮ Cubrirse</button>
+        <button id="btn-j2">⚙︎ ¡Dispara!</button>
+      </div>
     </div>
-    <div class="stats">
-      Cargador: <span id="balas-j2" class="balas"></span>
-      Vidas: <span id="vidas-j2" class="vidas"></span>
-      Exp: <span id="exp-j2">0</span>
+
+     <!-- Mensaje invertido para el jugador contrario -->
+    <div id="mensaje-barrera-invertido" class="invertido">
+      <p id="mensaje-2jug-invertido">Esperando inicio...</p>
     </div>
-    <p class="nombre-jugador">Jugador 2</p>
+
+    <!-- Mensaje central jugador principal -->
+    <div id="mensaje-barrera">
+      <p id="mensaje-2jug">Esperando inicio...</p>
+    </div>
+
+   
+
+
+    <!-- Jugador 1 (abajo) -->
+    <div id="zona-j1" class="zona-jugador">
+      <p class="nombre-jugador">Jugador 1</p>
+      <div class="stats">
+        Cargador: <span id="balas-j1" class="balas"></span>
+        Vidas: <span id="vidas-j1" class="vidas"></span>
+        Exp: <span id="exp-j1">0</span>
+      </div>
+      <div class="zona-botones">
+        <button id="btn-j1">⚙︎ ¡Dispara!</button>
+        <button id="btn-cubrir-j1" disabled>☮ Cubrirse</button>
+      </div>
+    </div>
+
   </div>
-
-  <!-- Mensaje central -->
-  <div id="mensaje-barrera">
-    <p id="mensaje-2jug">Esperando inicio...</p>
-  </div>
-
-  <!-- Jugador 1 (abajo) -->
-  <div id="zona-j1" class="zona-jugador">
-    <p class="nombre-jugador">Jugador 1</p>
-    <div class="stats">
-      Cargador: <span id="balas-j1" class="balas"></span>
-      Vidas: <span id="vidas-j1" class="vidas"></span>
-      Exp: <span id="exp-j1">0</span>
-    </div>
-    <div class="zona-botones">
-      <button id="btn-j1">⚙︎ ¡Dispara!</button>
-      <button id="btn-cubrir-j1" disabled>☮ Cubrirse</button>
-    </div>
-  </div>
-
-</div>
 </body>
 
 </html>

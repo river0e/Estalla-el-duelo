@@ -1,3 +1,5 @@
+/* ================================================== */
+/* 🔹 PANTALLA INICIAL */
 #pantalla-inicial {
   position: fixed;
   top: 0;
@@ -8,60 +10,175 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 40px;
   z-index: 1000;
-
-  /* Usamos la misma imagen de fondo que el juego */
+  overflow: hidden;
   background: url("Imagen/Oeste3.png") center/cover no-repeat;
+  filter: grayscale(50%) brightness(85%) contrast(110%);
+  animation: fondoZoom 15s ease-in-out infinite alternate;
+}
 
-  /* Filtro para gris */
-  filter: grayscale(80%) brightness(90%);
+@keyframes fondoZoom {
+  0% {
+    transform: scale(1) translateY(0);
+  }
+
+  100% {
+    transform: scale(1.09) translateY(-2%);
+  }
+}
+
+/* ================================================== */
+/* 🔹 CARTEL PRINCIPAL */
+#cartel-inicial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(20px, 4vw, 40px) clamp(30px, 6vw, 60px);
+  border: 6px solid #3e1f0f;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #5a3b1a, #3e1f0f);
+  box-shadow:
+    inset 0 0 15px rgba(255, 140, 0, 0.3),
+    0 0 25px rgba(255, 150, 50, 0.6);
+  text-align: center;
+  opacity: 0;
+  transform: scale(0.9);
+  animation: cartelEntrada 1s ease-out forwards;
+  animation-delay: 0.5s;
+  max-width: 90%;
+  width: auto;
+  box-sizing: border-box;
+}
+
+@keyframes cartelEntrada {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) rotate(-3deg);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale(1.05) rotate(2deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* 🔹 TÍTULO DEL CARTEL */
+#cartel-inicial h1 {
+  font-family: "Bangers", cursive;
+  font-size: clamp(2.5em, 6vw, 5em);
+  color: #fce5b3;
+  text-shadow: 2px 2px 0 #000, 0 0 10px rgba(255, 165, 0, 0.8);
+  margin: 0;
+  position: relative;
 }
 
 
-#pantalla-inicial h1 {
-  font-family: "Bangers", cursive;
-  font-size: 3em;
-  color: #5a3b1a;
-  text-shadow: 2px 2px #d2b48c;
+
+/* ================================================== */
+/* 🔹 SUBTÍTULO */
+#subtitulo-gallina {
+  font-family: "Fjalla One", sans-serif;
+  font-size: clamp(1em, 2.5vw, 2em);
+  color: #ff9100;
+  margin-top: 10px;
+  opacity: 0;
+  transform: translateY(-20px) rotate(-15deg);
+  text-shadow: 0 0 8px #ff4000, 0 0 16px #ff9100, 0 0 32px #ff2200;
+  animation: aparecerGallina 1s ease forwards, reboteGallina 0.5s ease 1s 1;
+}
+
+@keyframes aparecerGallina {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.5) rotate(-15deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes reboteGallina {
+  0% {
+    transform: scale(0.8) rotate(-5deg);
+  }
+
+  50% {
+    transform: scale(1.15) rotate(10deg);
+  }
+
+  70% {
+    transform: scale(0.95) rotate(-3deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* ================================================== */
+/* 🔹 BOTONES INICIO */
+
+.botones-inicio {
+  display: flex;
+  gap: clamp(20px, 5vw, 50px);
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
 }
 
 #pantalla-inicial button {
   font-family: "Fjalla One", sans-serif;
-  font-size: 1.5em;
-  width: 200px;
-  height: 200px;
+  font-size: clamp(1.1em, 2.5vw, 1.7em);
+  width: clamp(170px, 18vw, 230px);
+  height: clamp(60px, 12vh, 80px);
+  border: 3px solid #3e1f0f;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #5a3b1a, #3e1f0f);
+  color: #fce5b3;
+  text-shadow: 1px 1px 0 #000;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
 }
+
+#pantalla-inicial button:hover {
+  background: linear-gradient(145deg, #7b5022, #5a3b1a);
+  transform: scale(1.1) rotate(-1deg);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.8);
+}
+
+#pantalla-inicial button:active {
+  transform: scale(0.95);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+}
+
 
 /* ================================================== */
 /* 🔹 RESET Y CONFIGURACIÓN BÁSICA */
 /* ================================================== */
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-* {
-  -webkit-tap-highlight-color: transparent; /* Quita flash gris Android */
-}
 
 body {
   display: flex;
   flex-direction: column;
-  justify-content: center; 
-  align-items: center;    
-  min-height: 100vh;      
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
   font-family: "Rockwell", sans-serif;
   text-align: center;
   padding: 5px;
   color: #3e2f1c;
 
-  background: linear-gradient(
-      to bottom,
+  background: linear-gradient(to bottom,
       rgba(216, 153, 101, 0.8),
-      rgba(222, 184, 135, 0.8)
-    ),
+      rgba(222, 184, 135, 0.8)),
     url("Imagen/Oeste2.png");
   background-size: cover;
   background-position: center center;
@@ -70,6 +187,7 @@ body {
 /* ================================================== */
 /* 🔹 MENSAJES Y NIVELES */
 /* ================================================== */
+
 #mensaje {
   font-family: "Bangers", cursive;
   font-size: 30px;
@@ -85,20 +203,21 @@ body {
   text-shadow: 1px 1px 0 #d2b48c;
   text-align: center;
   margin-top: 0px;
-  line-height: 1.2; 
+  line-height: 1.2;
 }
 
 #nivel-info p:last-child {
   display: flex;
-  align-items: center;  
-  justify-content: center; 
-  gap: 8px;             
-  margin-top: 0px;      
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 0px;
 }
 
 /* ================================================== */
 /* 🔹 CAMPO DE CONTRASEÑA */
 /* ================================================== */
+
 .campo-password {
   display: inline-block;
   position: relative;
@@ -125,6 +244,7 @@ body {
 /* ================================================== */
 /* 🔹 ZONA DE BOTONES */
 /* ================================================== */
+
 #zona-control {
   margin-top: 20px;
   display: flex;
@@ -133,7 +253,6 @@ body {
   flex-wrap: wrap;
 }
 
-/* --- Botones redondos --- */
 button {
   margin-top: 10px;
   font-family: "Fjalla One", sans-serif;
@@ -144,7 +263,7 @@ button {
   border: none;
   border-radius: 50%;
   cursor: pointer;
-  padding: 0 5px;  
+  padding: 0 5px;
   white-space: nowrap;
   touch-action: manipulation;
 
@@ -155,7 +274,7 @@ button {
   color: #fff;
   background-color: #ff7f32;
   text-shadow: -1px -1px 0 #643713, 1px -1px 0 #643713,
-               -1px 1px 0 #643713, 1px 1px 0 #643713;
+    -1px 1px 0 #643713, 1px 1px 0 #643713;
 
   box-shadow: 0 6px 15px rgba(255, 127, 50, 0.6);
   transition: all 0.3s ease;
@@ -180,6 +299,7 @@ button:active {
 /* ================================================== */
 /* 🔹 BALAS */
 /* ================================================== */
+
 #balas {
   display: flex;
   gap: 8px;
@@ -190,24 +310,24 @@ button:active {
 .bala {
   width: 18px;
   height: 25px;
-  border-radius: 40% 40% 30% 30%; 
+  border-radius: 40% 40% 30% 30%;
   border: 2px solid #111;
   transition: 0.25s ease;
 
   background: linear-gradient(145deg, #555, #222);
-  box-shadow: inset 0 2px 3px rgba(255,255,255,0.2),
-              inset 0 -2px 3px rgba(0,0,0,0.6),
-              0 1px 2px rgba(0,0,0,0.4);
+  box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.2),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.6),
+    0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 .bala.activa {
   border: 2px solid #666;
   transform: translateY(-2px) scale(1.05);
 
-  background: linear-gradient(160deg, #d9d9d9, #7e7e7e, #b5b5b5); 
-  box-shadow: inset 0 2px 4px rgba(255,255,255,0.6),
-              inset 0 -2px 4px rgba(0,0,0,0.5),
-              0 0 8px rgba(200,200,200,0.6);
+  background: linear-gradient(160deg, #d9d9d9, #7e7e7e, #b5b5b5);
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.6),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.5),
+    0 0 8px rgba(200, 200, 200, 0.6);
 }
 
 /* ================================================== */
@@ -243,9 +363,20 @@ button:active {
 }
 
 @keyframes latido {
-  0%, 100% { transform: scale(1); }
-  25%, 75% { transform: scale(1.2); }
-  50% { transform: scale(1); }
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  25%,
+  75% {
+    transform: scale(1.2);
+  }
+
+  50% {
+    transform: scale(1);
+  }
 }
 
 /* ================================================== */
@@ -258,10 +389,99 @@ button:active {
   vertical-align: middle;
 }
 
+/* Solo mostrar en móviles */
+.solo-movil {
+  display: none;
+}
+
 /* ================================================== */
-/* 🔹 RESPONSIVE - TABLETS */
+/* 🔹 RESPONSIVE */
 /* ================================================== */
+
+/* Mostrar botones VS en móviles y tablets */
+@media (max-width: 1024px) {
+  .solo-movil {
+    display: inline-flex;
+  }
+
+  #pantalla-inicial button {
+    font-size: clamp(1em, 3.5vw, 1.5em);
+    width: clamp(140px, 50%, 220px);
+    height: clamp(50px, 10vh, 70px);
+  }
+
+  /* Ajustes del cartel principal */
+  #cartel-inicial {
+    padding: clamp(15px, 4vw, 30px);
+    max-width: 90%;
+    width: auto;
+  }
+
+  #cartel-inicial h1 {
+    font-size: clamp(2em, 8vw, 4em);
+  }
+
+  #subtitulo-gallina {
+    font-size: clamp(0.9em, 5vw, 1.5em);
+    margin-top: 10px;
+  }
+
+  /* Ajustes generales de layout */
+  body {
+    padding: 5px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  #zona-control {
+    gap: 10px;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Iconos dentro de botones */
+  .icon {
+    font-size: 1.5rem;
+    margin-right: 5px;
+  }
+}
+
 @media (max-width: 768px) {
+
+  .solo-movil {
+    display: inline-flex;
+  }
+
+  #pantalla-inicial button {
+    font-size: clamp(1em, 4vw, 1.5em);
+    width: clamp(140px, 60%, 220px);
+  }
+
+  #cartel-inicial {
+    padding: clamp(15px, 4vw, 30px);
+  }
+
+  #cartel-inicial h1 {
+    font-size: clamp(2em, 8vw, 4em);
+  }
+
+  #subtitulo-gallina {
+    font-size: clamp(0.9em, 5vw, 1.5em);
+  }
+
+  #pantalla-inicial button {
+    font-size: clamp(1em, 4vw, 1.5em);
+    width: clamp(140px, 30vw, 200px);
+    height: clamp(50px, 10vh, 70px);
+  }
+
   body {
     padding: 5px;
     margin: 0;
@@ -284,36 +504,36 @@ button:active {
   }
 
   #password {
-    margin-top: 5px; 
+    margin-top: 5px;
     font-size: 16px;
   }
 
   #zona-control {
     gap: 10px;
-    margin-top: 15px;       
-    display: flex;  
-    flex-direction: column;       
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
   }
 
   #boton-disparo-container {
-    order: -1; 
-    display: none; 
+    order: -1;
+    display: none;
     margin-bottom: 10px;
-    text-align: center;  
+    text-align: center;
   }
 
   button {
     width: 120px;
     height: 120px;
-    font-size: 1em;              
+    font-size: 1em;
     padding: 6px;
     position: relative;
     text-align: center;
-    white-space: nowrap;         
-    touch-action: manipulation;              
-    -webkit-tap-highlight-color: transparent; 
+    white-space: nowrap;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .icon {
@@ -322,7 +542,7 @@ button:active {
   }
 
   #nivel-info p:last-child {
-    gap: 6px;          
+    gap: 6px;
     margin-top: 4px;
   }
 
@@ -344,6 +564,34 @@ button:active {
 /* 🔹 RESPONSIVE - MÓVILES PEQUEÑOS */
 /* ================================================== */
 @media (max-width: 480px) {
+
+  .solo-movil {
+    display: inline-flex;
+  }
+
+  #pantalla-inicial button {
+    font-size: clamp(1em, 4vw, 1.5em);
+    width: clamp(140px, 60%, 220px);
+  }
+
+  #cartel-inicial {
+    padding: clamp(10px, 4vw, 20px);
+  }
+
+  #cartel-inicial h1 {
+    font-size: clamp(1.8em, 10vw, 3em);
+  }
+
+  #subtitulo-gallina {
+    font-size: clamp(0.8em, 6vw, 1.3em);
+  }
+
+  #pantalla-inicial button {
+    font-size: clamp(0.9em, 5vw, 0.9em);
+    width: clamp(120px, 35vw, 190px);
+    height: clamp(45px, 9vh, 60px);
+  }
+
   body {
     padding: 5px;
     margin: 0;
@@ -372,23 +620,23 @@ button:active {
   #zona-control {
     gap: 10px;
     margin-top: 10px;
-    display: flex;  
-    flex-direction: column;       
+    display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
   }
 
   #boton-disparo-container {
-    order: -1; 
+    order: -1;
     display: none;
     margin-bottom: 10px;
-    text-align: center;  
+    text-align: center;
   }
 
   button {
     width: 90px;
     height: 90px;
-    font-size: 0.85em;  
+    font-size: 0.85em;
     padding: 4px;
     white-space: nowrap;
   }

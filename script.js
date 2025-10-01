@@ -1,7 +1,6 @@
 import { aplicarMejoraAleatoria, obtenerMejorasActivas, resetearMejoras } from "./tienda.js";
 import { iniciarDuelo2Jugadores } from "./modo2jugadores.js";
 
-document.getElementById("btnLocal").addEventListener("click", iniciarDuelo2Jugadores);
 
 console.log("script.js cargado correctamente");
 
@@ -12,18 +11,33 @@ const nivelInfo = document.getElementById('nivel-info');
 const zonaControl = document.getElementById('zona-control');
 const mensajeElem = document.getElementById('mensaje');
 
-// Ocultamos elementos del juego al inicio
+// Oculto elementos del juego al inicio
 nivelInfo.style.display = 'none';
 zonaControl.style.display = 'none';
 mensajeElem.style.display = 'none';
 
 btnCPU.addEventListener('click', () => {
+  sonidos.disparo.play();
   pantallaInicial.style.display = 'none';
   nivelInfo.style.display = 'block';
   zonaControl.style.display = 'flex';
   mensajeElem.style.display = 'block';
   
   reiniciarJuego(); // inicia el juego contra CPU como antes
+});
+
+document.getElementById("btnLocal").addEventListener("click", () => {
+  iniciarDuelo2Jugadores();
+  sonidos.disparo.play();
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    const subtitulo = document.createElement("p");
+    subtitulo.id = "subtitulo-gallina";
+    subtitulo.textContent = "¿Eres un/a gallina?";
+    document.getElementById("cartel-inicial").appendChild(subtitulo);
+  }, 4000); 
 });
 
 // -------------------------

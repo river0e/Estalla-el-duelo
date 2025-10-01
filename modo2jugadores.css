@@ -134,6 +134,11 @@
   color: #ffffff;
 }
 
+#pantalla-2jug .vida.activa.peligro::before {
+  color: #c44747; 
+  animation: latido 0.5s infinite;
+}
+
 @keyframes latido {
   0%, 100% { transform: scale(1); }
   25%, 75% { transform: scale(1.2); }
@@ -142,8 +147,9 @@
 
 /* ------------------------- */
 /* 🔹 MENSAJE CENTRAL */
-#pantalla-2jug #mensaje-barrera {
-  font-size: clamp(18px, 4vw, 32px); /* tamaño base flexible */
+#pantalla-2jug #mensaje-barrera,
+#mensaje-barrera-invertido  {
+  font-size: clamp(18px, 4vw, 32px); 
   color: #f0f4ff;
   text-shadow: 2px 2px 0 #0f1522;
   text-align: center;
@@ -164,6 +170,10 @@
   100% { transform: scale(1.05); opacity: 1; }
 }
 
+#mensaje-barrera-invertido {
+  transform: rotate(180deg);
+  animation: mensajeSuaveInvertido 1.8s ease-in-out infinite alternate;
+}
 
 /* ------------------------- */
 /* 🔹 BOTONES */
@@ -212,7 +222,11 @@
   box-shadow: 0 4px 12px rgba(70, 100, 180, 0.7);
 }
 
-
+/* ------------------------- */
+/* 🔹 Invertir Jugador 2 como espejo */
+#zona-j2 {
+  transform: rotate(180deg); 
+}
 
 /* ------------------------- */
 /* 🔹 RESPONSIVE HORIZONTAL/VERTICAL */
@@ -237,3 +251,4 @@
   #pantalla-2jug .bala { width: clamp(10px, 5vw, 16px); height: clamp(16px, 6vw, 22px); }
   #pantalla-2jug .vida { width: clamp(16px, 5vw, 22px); height: clamp(16px, 5vw, 22px); }
 }
+

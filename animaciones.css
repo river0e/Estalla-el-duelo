@@ -1,32 +1,3 @@
-/* ========================= */
-/*      SCROLLBAR CUSTOM     */
-/* ========================= */
-::-webkit-scrollbar {
-  width: 10px;
-  height: 5px;
-}
-
-::-webkit-scrollbar-track {
-  background: #e7ae7fe1;
-  border-radius: 10px;
-}
-
-body::-webkit-scrollbar-thumb {
-  background: #e7ae7fe1;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: repeating-linear-gradient(
-    45deg,
-    #a6d672,
-    #a6d672 4px,
-    #4b8f29 5px,
-    #a6d672 8px
-  );
-  border-radius: 10px;
-  border: 2px solid #c0df92;
-}
 
 /* ========================= */
 /*     ANIMACIONES BÁSICAS   */

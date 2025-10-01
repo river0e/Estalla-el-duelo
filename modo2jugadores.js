@@ -24,20 +24,27 @@ const sndInicio = document.getElementById("sndInicio");
 const sndDisparo = document.getElementById("sndDisparo");
 const sndVictoria = document.getElementById("sndVictoria");
 const sndCubrirse = document.getElementById("sndCubrirse");
+const sndGameOver = document.getElementById("sndGameOver");
 
 // Estados
 let rondaActiva = false;
 let cubiertoJ1 = false, cubiertoJ2 = false;
 let turnoActivoTimeout = null;
 
+
 function mostrarMensaje(texto, duracion = 3500) {
-  mensaje.textContent = texto;
+  const mensaje1 = document.getElementById("mensaje-2jug");
+  const mensaje2 = document.getElementById("mensaje-2jug-invertido");
+
+  mensaje1.textContent = texto;
+  mensaje2.textContent = texto;
+
   clearTimeout(turnoActivoTimeout);
   turnoActivoTimeout = setTimeout(() => {
-    mensaje.textContent = "";
+    mensaje1.textContent = "";
+    mensaje2.textContent = "";
   }, duracion);
 }
-
 // ==============================
 //   INICIO
 // ==============================
@@ -71,6 +78,7 @@ function iniciarRonda() {
   const delay = Math.random() * 2000 + 1500;
   setTimeout(() => {
     mostrarMensaje("¡DISPARA!");
+    sndDisparo.play();
     rondaActiva = true;
 
     if (balasJ1 > 0) btnJ1.disabled = false;
@@ -81,8 +89,9 @@ function iniciarRonda() {
     // Tiempo límite por ronda (6s)
     clearTimeout(turnoActivoTimeout);
     turnoActivoTimeout = setTimeout(() => {
-      mostrarMensaje("¡Tiempo expirado! Ambos pierden 1 vida.");
+      mostrarMensaje("¡Tiempo agotado! Ambos pierden 1 vida.");
       vidasJ1--; vidasJ2--;
+      sndGameOver.play();
       actualizarUI();
       if (!comprobarGanador()) setTimeout(iniciarRonda, 1500);
     }, 6000);
@@ -94,8 +103,7 @@ function iniciarRonda() {
 // ==============================
 function disparar(jugador) {
   if (!rondaActiva) return;
-  sndDisparo.play();
-  clearTimeout(turnoActivoTimeout); // Fin del turno al disparar o cubrirse
+  clearTimeout(turnoActivoTimeout); 
   rondaActiva = false;
 
   let atacante, defensor, cubiertoDefensor, balasAtacante, expAtacante, vidasDefensor;
@@ -128,11 +136,13 @@ function disparar(jugador) {
   btnJ2.disabled = true;
   btnCubrirJ1.disabled = true;
   btnCubrirJ2.disabled = true;
+  sndVictoria.play();
 
   setTimeout(() => {
     if (!comprobarGanador()) iniciarRonda();
   }, 1500);
 }
+
 
 // ==============================
 //   CUBRIRSE
@@ -192,14 +202,19 @@ function renderVidas(container, cantidad) {
   for (let i = 0; i < 3; i++) {
     const vida = document.createElement("span");
     vida.classList.add("vida");
-    if (i < cantidad) vida.classList.add("activa");
-    else vida.classList.add("perdida");
+    if (i < cantidad) {
+      vida.classList.add("activa");
+      // Si es la última vida y solo queda 1
+      if (cantidad === 1) vida.classList.add("peligro");
+    } else {
+      vida.classList.add("perdida");
+    }
     container.appendChild(vida);
   }
 }
 
 // ==============================
-//   GANADOR / CARTEL (REUTILIZA #cartel-gameover)
+//   GANADOR / CARTEL 
 // ==============================
 function finalizarGanador(jugador) {
   rondaActiva = false;
@@ -208,7 +223,7 @@ function finalizarGanador(jugador) {
   btnCubrirJ1.disabled = true;
   btnCubrirJ2.disabled = true;
 
-  sndVictoria.play();
+  sndGameOver.play();
   mostrarCartelGanador(jugador);
 }
 
