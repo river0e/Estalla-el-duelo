@@ -32,7 +32,10 @@ let cubiertoJ1 = false, cubiertoJ2 = false;
 let turnoActivoTimeout = null;
 
 
-function mostrarMensaje(texto, duracion = 3500) {
+// ==============================
+//   MENSAJE
+// ==============================
+function mostrarMensaje(texto, duracion = 4000) { // duración más larga
   const mensaje1 = document.getElementById("mensaje-2jug");
   const mensaje2 = document.getElementById("mensaje-2jug-invertido");
 
@@ -45,6 +48,7 @@ function mostrarMensaje(texto, duracion = 3500) {
     mensaje2.textContent = "";
   }, duracion);
 }
+
 // ==============================
 //   INICIO
 // ==============================
@@ -75,7 +79,7 @@ function iniciarRonda() {
 
   mostrarMensaje("Preparados... espera la señal...");
 
-  const delay = Math.random() * 2000 + 1500;
+  const delay = Math.random() * 2500 + 1000;
   setTimeout(() => {
     mostrarMensaje("¡DISPARA!");
     sndDisparo.play();
@@ -93,7 +97,7 @@ function iniciarRonda() {
       vidasJ1--; vidasJ2--;
       sndGameOver.play();
       actualizarUI();
-      if (!comprobarGanador()) setTimeout(iniciarRonda, 1500);
+      if (!comprobarGanador()) setTimeout(iniciarRonda, 2500);
     }, 6000);
   }, delay);
 }
@@ -117,19 +121,19 @@ function disparar(jugador) {
 
   if (balasAtacante > 0) balasAtacante--;
 
-  let mensajeRonda = `${atacante} dispara. `;
+  let mensajeRonda;
   if (cubiertoDefensor) {
-    mensajeRonda += `${defensor} se cubrió a tiempo y rebota el disparo. ${atacante} pierde 1 bala extra. ${defensor} gana 1 bala de reflejos.`;
+    mensajeRonda = `${atacante} dispara antes, ${defensor} se cubre +1 bala`;
     balasAtacante = Math.max(0, balasAtacante - 1);
     if (jugador === 1) { balasJ1 = balasAtacante; balasJ2 = Math.min(3, balasJ2+1); }
     else { balasJ2 = balasAtacante; balasJ1 = Math.min(3, balasJ1+1); }
   } else {
-    mensajeRonda += `${defensor} recibe el disparo y pierde 1 vida. ${atacante} gana 1 experiencia.`;
+    mensajeRonda = `${atacante} dispara antes, ${defensor} -1 vida`;
     if (jugador === 1) { vidasJ2--; expJ1++; balasJ1 = balasAtacante; }
     else { vidasJ1--; expJ2++; balasJ2 = balasAtacante; }
   }
 
-  mensaje.textContent = mensajeRonda;
+  mostrarMensaje(mensajeRonda, 5000); // mensaje más largo
   actualizarUI();
 
   btnJ1.disabled = true;
@@ -140,9 +144,8 @@ function disparar(jugador) {
 
   setTimeout(() => {
     if (!comprobarGanador()) iniciarRonda();
-  }, 1500);
+  }, 2500); // tiempo más largo entre rondas
 }
-
 
 // ==============================
 //   CUBRIRSE
@@ -157,14 +160,14 @@ function cubrirse(jugador) {
   if (jugador === 1) {
     cubiertoJ1 = true;
     if (balasJ1 < 3) balasJ1++;
-    mensajeRonda = "Jugador 1 se cubre y carga 1 bala extra.";
+    mensajeRonda = "Jugador 1 se cubre +1 bala";
   } else {
     cubiertoJ2 = true;
     if (balasJ2 < 3) balasJ2++;
-    mensajeRonda = "Jugador 2 se cubre y carga 1 bala extra.";
+    mensajeRonda = "Jugador 2 se cubre +1 bala";
   }
 
-  mensaje.textContent = mensajeRonda;
+  mostrarMensaje(mensajeRonda, 5000);
   actualizarUI();
 
   btnJ1.disabled = true;
@@ -172,7 +175,7 @@ function cubrirse(jugador) {
   btnCubrirJ1.disabled = true;
   btnCubrirJ2.disabled = true;
 
-  setTimeout(iniciarRonda, 1500);
+  setTimeout(iniciarRonda, 2500);
 }
 
 // ==============================
@@ -263,9 +266,9 @@ function comprobarGanador() {
 // ==============================
 //   EVENTOS
 // ==============================
-btnJ1.addEventListener("click", () => disparar(1));
-btnJ2.addEventListener("click", () => disparar(2));
-btnCubrirJ1.addEventListener("click", () => cubrirse(1));
-btnCubrirJ2.addEventListener("click", () => cubrirse(2));
+btnJ1.addEventListener("pointerdown", () => disparar(1));
+btnJ2.addEventListener("pointerdown", () => disparar(2));
+btnCubrirJ1.addEventListener("pointerdown", () => cubrirse(1));
+btnCubrirJ2.addEventListener("pointerdown", () => cubrirse(2));
 
 export { iniciarDuelo2Jugadores };

@@ -19,6 +19,7 @@
   font-family: "Bangers", cursive;
   z-index: 1000;
   overflow: hidden;
+  touch-action: manipulation;
 }
 
 /* ------------------------- */
